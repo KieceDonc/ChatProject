@@ -29,7 +29,7 @@
         android:text="@string/APP_Protection" />
 
     <Spinner
-        android:id="@+id/SpinnerPassword"
+        android:id="@+id/SpinnerEncryption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

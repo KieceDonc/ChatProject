@@ -20,6 +20,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiEnterpriseConfig;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.telecom.Call;
 import android.util.Log;
 
 import java.util.regex.Pattern;
@@ -30,7 +31,7 @@ import java.util.regex.Pattern;
  * @author Sean Owen
  * @author Steffen Kieß
  */
-public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,Object> {
+public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
 
     private static final String TAG = WifiConfigManager.class.getSimpleName();
 
@@ -43,8 +44,8 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
     }
 
     @Override
-    protected Object doInBackground(WifiParsedResult... args) {
-        WifiParsedResult theWifiResult = args[0];
+    protected Object doInBackground(Object... args) {
+        WifiData CallData  = new WifiData();
         // Start WiFi, otherwise nothing will work
         if (!wifiManager.isWifiEnabled()) {
             Log.i(TAG, "Enabling wi-fi...");
@@ -70,7 +71,7 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
                 count++;
             }
         }
-        String networkTypeString = theWifiResult.getNetworkEncryption();
+        String networkTypeString = CallData.getAPEncryption();
         WifiNetworkType networkType;
         try {
             networkType = WifiNetworkType.forIntentValue(networkTypeString);
@@ -79,19 +80,19 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
             return null;
         }
         if (networkType == WifiNetworkType.NO_PASSWORD) {
-            changeNetworkUnEncrypted(wifiManager, theWifiResult);
+            changeNetworkUnEncrypted(wifiManager, CallData);
         } else {
-            String password = theWifiResult.getPassword();
+            String password = CallData.getAPPassword();
             if (password != null && !password.isEmpty()) {
                 switch (networkType) {
                     case WEP:
-                        changeNetworkWEP(wifiManager, theWifiResult);
+                        changeNetworkWEP(wifiManager, CallData);
                         break;
                     case WPA:
-                        changeNetworkWPA(wifiManager, theWifiResult);
+                        changeNetworkWPA(wifiManager, CallData);
                         break;
                     case WPA2_EAP:
-                        changeNetworkWPA2EAP(wifiManager, theWifiResult);
+                        changeNetworkWPA2EAP(wifiManager, CallData);
                         break;
                 }
             }
@@ -124,7 +125,7 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
         }
     }
 
-    private static WifiConfiguration changeNetworkCommon(WifiParsedResult wifiResult) {
+    private static WifiConfiguration changeNetworkCommon(WifiData CallData) {
         WifiConfiguration config = new WifiConfiguration();
         config.allowedAuthAlgorithms.clear();
         config.allowedGroupCiphers.clear();
@@ -132,15 +133,15 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
         config.allowedPairwiseCiphers.clear();
         config.allowedProtocols.clear();
         // Android API insists that an ascii SSID must be quoted to be correctly handled.
-        config.SSID = quoteNonHex(wifiResult.getSsid());
-        config.hiddenSSID = wifiResult.isHidden();
+        config.SSID = quoteNonHex(CallData.getAPSSID());
+        config.hiddenSSID = CallData.getAPHidden();
         return config;
     }
 
     // Adding a WEP network
-    private static void changeNetworkWEP(WifiManager wifiManager, WifiParsedResult wifiResult) {
+    private static void changeNetworkWEP(WifiManager wifiManager, WifiData CallData) {
         WifiConfiguration config = changeNetworkCommon(wifiResult);
-        config.wepKeys[0] = quoteNonHex(wifiResult.getPassword(), 10, 26, 58);
+        config.wepKeys[0] = quoteNonHex(CallData.getAPPassword(), 10, 26, 58);
         config.wepTxKeyIndex = 0;
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
         config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
@@ -152,10 +153,10 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
     }
 
     // Adding a WPA or WPA2 network
-    private static void changeNetworkWPA(WifiManager wifiManager, WifiParsedResult wifiResult) {
+    private static void changeNetworkWPA(WifiManager wifiManager, WifiData CallData) {
         WifiConfiguration config = changeNetworkCommon(wifiResult);
         // Hex passwords that are 64 bits long are not to be quoted.
-        config.preSharedKey = quoteNonHex(wifiResult.getPassword(), 64);
+        config.preSharedKey = quoteNonHex(CallData.getAPPassword(), 64);
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
         config.allowedProtocols.set(WifiConfiguration.Protocol.WPA); // For WPA
         config.allowedProtocols.set(WifiConfiguration.Protocol.RSN); // For WPA2
@@ -169,10 +170,10 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
     }
 
     // Adding a WPA2 enterprise (EAP) network
-    private static void changeNetworkWPA2EAP(WifiManager wifiManager, WifiParsedResult wifiResult) {
+    private static void changeNetworkWPA2EAP(WifiManager wifiManager, WifiData CallData) {
         WifiConfiguration config = changeNetworkCommon(wifiResult);
         // Hex passwords that are 64 bits long are not to be quoted.
-        config.preSharedKey = quoteNonHex(wifiResult.getPassword(), 64);
+        config.preSharedKey = quoteNonHex(CallData.getAPPassword(), 64);
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
         config.allowedProtocols.set(WifiConfiguration.Protocol.RSN); // For WPA2
         config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP);
@@ -182,14 +183,14 @@ public final class WifiConfigManager extends AsyncTask<WifiParsedResult,Object,O
         config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
         config.enterpriseConfig.setIdentity(wifiResult.getIdentity());
         config.enterpriseConfig.setAnonymousIdentity(wifiResult.getAnonymousIdentity());
-        config.enterpriseConfig.setPassword(wifiResult.getPassword());
+        config.enterpriseConfig.setPassword(CallData.getAPPassword());
         config.enterpriseConfig.setEapMethod(parseEap(wifiResult.getEapMethod()));
         config.enterpriseConfig.setPhase2Method(parsePhase2(wifiResult.getPhase2Method()));
         updateNetwork(wifiManager, config);
     }
 
     // Adding an open, unsecured network
-    private static void changeNetworkUnEncrypted(WifiManager wifiManager, WifiParsedResult wifiResult) {
+    private static void changeNetworkUnEncrypted(WifiManager wifiManager, WifiData CallData) {
         WifiConfiguration config = changeNetworkCommon(wifiResult);
         config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
         updateNetwork(wifiManager, config);

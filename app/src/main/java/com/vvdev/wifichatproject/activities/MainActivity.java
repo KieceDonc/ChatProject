@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.vvdev.wifichatproject.R;
+import com.vvdev.wifichatproject.ui.AskForWifiData;
 
 import java.lang.reflect.Method;
 
@@ -21,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
          * https://stackoverflow.com/questions/44175056/how-to-create-custom-wpa-hotspot-with-ssid-and-password-in-android
          * https://stackoverflow.com/questions/27653084/creating-wpa2-psk-access-point-in-android-programmatically
          * https://github.com/zxing/zxing/blob/master/android/src/com/google/zxing/client/android/wifi/WifiConfigManager.java*/
+
+        AskForWifiData Call = new AskForWifiData();
+        Call.ShowDialog(this);
+
 
     }
 
