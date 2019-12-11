@@ -19,4 +19,17 @@
     <string name="APP_Protection">Protection</string>
     <string name="APP_Password">Password</string>
     <string name="APP_ShowPassword">Show password</string>
+    <string-array name="APP_TypeEncryption">
+        <item>None</item>
+        <item>WPA</item>
+        <item>WPA2</item>
+        <item>WPA2-EAP ( recommended )</item>
+        <item>WEP</item>
+    </string-array>
+
+
+    <string name="Cancel">Cancel</string>
+    <string name="Create">Create</string>
+
+
 </resources>

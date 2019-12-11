@@ -17,7 +17,8 @@
             android:id="@+id/SSIDInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/APP_SSID_Name" />
+            android:hint="@string/APP_SSID_Name"
+            android:inputType="textCapSentences" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -32,19 +33,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
+        android:id="@+id/LinearLayoutPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:counterEnabled="true"
-        app:counterMaxLength="32">
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/PasswordInput"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/APP_Password"
-            android:inputType="textPassword" />
+            app:counterEnabled="true"
+            app:counterMaxLength="32">
+
+            <EditText
+                android:id="@+id/PasswordInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/APP_Password"
+                android:inputType="textPassword" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <CheckBox
             android:id="@+id/ShowPassword"
@@ -52,6 +61,7 @@
             android:layout_height="wrap_content"
             android:text="@string/APP_ShowPassword" />
 
-    </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

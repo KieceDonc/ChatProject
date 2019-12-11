@@ -24,20 +24,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public WifiConfiguration CreateWifiConfiguration(String SSIDName, String SSIDPassword, int SecurityKey, boolean HiddenSSID){
-        WifiConfiguration wifiConfiguration = new WifiConfiguration();
-        wifiConfiguration.SSID = SSIDName;
-        wifiConfiguration.preSharedKey = SSIDPassword;
-        wifiConfiguration.hiddenSSID = HiddenSSID;
-        wifiConfiguration.status =   WifiConfiguration.Status.ENABLED;
-        wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-        wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-        wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-        wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-        wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-        wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-        wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
-        return wifiConfiguration;
-    }
-
 }

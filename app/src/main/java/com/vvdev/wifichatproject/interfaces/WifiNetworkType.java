@@ -18,6 +18,7 @@ package com.vvdev.wifichatproject.interfaces;
 
 enum WifiNetworkType {
 
+
     WEP,
     WPA,
     NO_PASSWORD,
