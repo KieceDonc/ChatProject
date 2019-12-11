@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         AskForWifiData Call = new AskForWifiData();
         Call.ShowDialog(this);
 
-
     }
 
 }

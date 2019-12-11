@@ -46,7 +46,7 @@ public class AskForWifiData{
         builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                dialog.dismiss();
             }
         });
         builder.setPositiveButton(R.string.Create, new DialogInterface.OnClickListener() {
@@ -54,6 +54,7 @@ public class AskForWifiData{
             public void onClick(DialogInterface dialog, int which) {
                 // send data from the AlertDialog to the Activity
                 DataCall.setAPHidden(true);
+                needtocallmethod;
             }
         });
         AlertDialog dialog = builder.create();
