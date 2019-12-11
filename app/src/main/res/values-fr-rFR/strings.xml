@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WifiChatProject</string>
+    <string name="network_Wifi_connect_title">Se connecter à un réseau wifi</string>
+    <string name="network_Wifi_connect_desc">Rejoindre un réseau wifi</string>
+    <string name="network_PlaneMode_title">Sans réseau</string>
+    <string name="network_PlaneMode_desc">Utiliser l\'application sans réseau</string>
+    <string name="network_NotConnected">Vous n\'êtes connecté à aucun réseau</string>
+    <string name="network_Wifi_AP_desc">Utiliser ce téléphone en tant qu\'un point d\'accès</string>
+    <string name="network_Wifi_AP_title">Crée un point d\'accès Wi-Fi</string>
+</resources>
