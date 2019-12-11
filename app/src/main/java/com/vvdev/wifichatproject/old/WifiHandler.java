@@ -14,7 +14,7 @@
  * Copyright (C) 2012 LISA team
  */
 
-package com.vvdev.wifichatproject.interfaces;
+package com.vvdev.wifichatproject.old;
 
 import java.util.List;
 
