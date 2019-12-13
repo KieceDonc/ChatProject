@@ -21,7 +21,7 @@ import com.vvdev.wifichatproject.R;
 import com.vvdev.wifichatproject.interfaces.WifiAP;
 import com.vvdev.wifichatproject.interfaces.WifiData;
 
-public class AskForWifiData{
+public class DialogAPWifiData {
 
     private final static String ACCESS_POINT_NOENCRYPTION = "nopass";
     private final static String ACCESS_POINT_WPA2_PSK = "WPA2-PSK";
@@ -34,9 +34,8 @@ public class AskForWifiData{
     private CheckBox ShowPassword;
     private Spinner SpinnerEncryption;
 
-    public void ShowDialog(final Context CurrentContext, final WifiManager mWifiManager){
-
-        DataCall = new WifiData();
+    public void ShowDialog(final Context CurrentContext, final WifiData receiveDataCall){
+        DataCall=receiveDataCall;
         final Activity CurrentActivity = (Activity) CurrentContext;
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(CurrentContext);
@@ -116,7 +115,7 @@ public class AskForWifiData{
                     DataCall.setAPEncryption(ACCESS_POINT_WPA2_PSK);
                     ShowLinearLayoutPassword();
                 }else{
-                    Log.e("AskForWifiData-Spinner","Error to get encryption. String value of selected item="+ItemSelected);
+                    Log.e("DialogAPWifiData-Spinner","Error to get encryption. String value of selected item="+ItemSelected);
                 }
             }
 

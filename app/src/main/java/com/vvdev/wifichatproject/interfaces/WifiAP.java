@@ -21,11 +21,18 @@ public class WifiAP {
     public void Setup(WifiData CallData){
         WifiApControl apControl = WifiApControl.getInstance(mContext);
         String Encryption = CallData.getAPEncryption();
+        WifiManager wifiManager = CallData.getWifiManager();
 
+
+        wifiManager.setWifiEnabled(false);
         if(Encryption.equals("WPA2-PSK")){
             apControl.setEnabled(getWPA2PSKConfig(CallData), true);
+            apControl.enable();
+            wifiManager.setWifiEnabled(true);
         }else if(Encryption.equals("nopass")){
             apControl.setEnabled(getNoneConfig(CallData), true);
+            apControl.enable();
+            wifiManager.setWifiEnabled(true);
         }else{
             Log.e("WifiAP_Setup()","wrong encryption string receive :"+Encryption);
         }

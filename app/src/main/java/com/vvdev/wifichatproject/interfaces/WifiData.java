@@ -8,6 +8,7 @@ public class WifiData {
     private CharSequence AP_Password; // Password for ap
     private CharSequence AP_SSID; // SSID name for ap
     private boolean AP_Hidden; // If true, ap is hidden, else not
+    private WifiManager wifiManager;
 
     public void setAPEncryption(String ReceiveString){
         AP_Encryption = ReceiveString;
@@ -39,6 +40,14 @@ public class WifiData {
 
     public boolean getAPHidden(){
         return AP_Hidden;
+    }
+
+    public void setWifiManager(WifiManager receive){
+        wifiManager = receive;
+    }
+
+    public WifiManager getWifiManager(){
+        return wifiManager;
     }
 
 }

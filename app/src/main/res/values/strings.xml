@@ -36,10 +36,13 @@
         <item>@string/ENCRYPTION_WPA2PSK</item>
     </string-array>
     <string name="ENCRYPTION_None">None</string>
-    <string name="ENCRYPTION_WPA2PSK">WPA2-PSK ( recommended )</string>
+    <string name="ENCRYPTION_WPA2PSK">WPA2-PSK ( create password )</string>
 
     <string name="Cancel">Cancel</string>
     <string name="Create">Create</string>
+    <string name="Activate">Activate</string>
 
+    <string name="PermWriteSystemTitle">You need to activate write settings system !</string>
+    <string name="PermWriteSystemDesc">By clicking on "Activate" this will redirect you on the permission menu of the app. You will have a button and you will have to turn on this one to use this app. By clicking on "Cancel" on will not be able to use this functionality</string>
 
 </resources>
