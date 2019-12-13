@@ -1,4 +1,4 @@
-package com.vvdev.wifichatproject.interfaces;
+package com.vvdev.wifichatproject.old;
 
 /*
  * Copyright (C) 2011 ZXing authors

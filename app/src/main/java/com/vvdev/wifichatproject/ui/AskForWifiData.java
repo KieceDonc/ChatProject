@@ -3,6 +3,7 @@ package com.vvdev.wifichatproject.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,18 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.vvdev.wifichatproject.R;
-import com.vvdev.wifichatproject.activities.MainActivity;
-import com.vvdev.wifichatproject.interfaces.WifiConfigManager;
+import com.vvdev.wifichatproject.interfaces.WifiAP;
 import com.vvdev.wifichatproject.interfaces.WifiData;
 
 public class AskForWifiData{
 
     private final static String ACCESS_POINT_NOENCRYPTION = "nopass";
-    private final static String ACCESS_POINT_WPA = "WPA";
-    private final static String ACCESS_POINT_WPA2 = "WPA2";
-    private final static String ACCESS_POINT_WPA2_EAP = "WPA2-EAP";
-    private final static String ACCESS_POINT_WPA2_PSK = "WPA2-PSk";
-    private final static String ACCESS_POINT_WEP = "WEP";
+    private final static String ACCESS_POINT_WPA2_PSK = "WPA2-PSK";
 
     private WifiData DataCall;
 
@@ -38,7 +34,7 @@ public class AskForWifiData{
     private CheckBox ShowPassword;
     private Spinner SpinnerEncryption;
 
-    public void ShowDialog(final Context CurrentContext){
+    public void ShowDialog(final Context CurrentContext, final WifiManager mWifiManager){
 
         DataCall = new WifiData();
         final Activity CurrentActivity = (Activity) CurrentContext;
@@ -57,20 +53,16 @@ public class AskForWifiData{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // send data from the AlertDialog to the Activity
+                dialog.dismiss();
                 DataCall.setAPHidden(false);
-                MainActivity CallMainActivity = new MainActivity();
-                CallMainActivity.AskForDataWifiDone();
+                WifiAP CallAP = new WifiAP(CurrentContext);
+                CallAP.Setup(DataCall);
+
             }
         });
         AlertDialog dialog = builder.create();
         Setup(CurrentContext, CurrentActivity,CustomLayout); // DO NOT PASS Setup() BEFORE DIALOG.SHOW(), you will get "try to invoke object on null object reference" error
         dialog.show();
-        /*dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Setup(CurrentContext, CurrentActivity); // DO NOT PASS Setup() BEFORE DIALOG.SHOW(), you will get "try to invoke object on null object reference" error
-            }
-        });*/
 
     }    // do something with the data coming from the AlertDialog
 
@@ -120,17 +112,8 @@ public class AskForWifiData{
                 if(ItemSelected.equals(ListEncryption[0])){ // 0 normally equals to "None"   11/12/2019
                     DataCall.setAPEncryption(ACCESS_POINT_NOENCRYPTION);
                     HideLinearLayoutPassword();
-                }else if(ItemSelected.equals(ListEncryption[3])){// 3 normally equals to "WPA2-EAP ( recommended )"   11/12/2019
+                }else if(ItemSelected.equals(ListEncryption[1])){// 3 normally equals to "WPA2-EAP ( recommended )"   11/12/2019
                     DataCall.setAPEncryption(ACCESS_POINT_WPA2_PSK);
-                    ShowLinearLayoutPassword();
-                }else if(ItemSelected.equals(ListEncryption[2])){ //2 normally equals to "WPA2"   11/12/2019
-                    DataCall.setAPEncryption(ACCESS_POINT_WPA2);
-                    ShowLinearLayoutPassword();
-                }else if(ItemSelected.equals(ListEncryption[1])){ //1 normally equals to "WPA"   11/12/2019
-                    DataCall.setAPEncryption(ACCESS_POINT_WPA);
-                    ShowLinearLayoutPassword();
-                }else if(ItemSelected.equals(ListEncryption[4])){  //4 normally equals to "WEP"   11/12/2019
-                    DataCall.setAPEncryption(ACCESS_POINT_WEP);
                     ShowLinearLayoutPassword();
                 }else{
                     Log.e("AskForWifiData-Spinner","Error to get encryption. String value of selected item="+ItemSelected);

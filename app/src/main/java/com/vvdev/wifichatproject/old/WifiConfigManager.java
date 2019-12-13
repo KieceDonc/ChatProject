@@ -1,4 +1,4 @@
-package com.vvdev.wifichatproject.interfaces;
+package com.vvdev.wifichatproject.old;
 
 /*
  * Copyright (C) 2011 ZXing authors
@@ -20,8 +20,10 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiEnterpriseConfig;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.telecom.Call;
 import android.util.Log;
+
+import com.vvdev.wifichatproject.interfaces.WifiData;
+import com.vvdev.wifichatproject.old.WifiNetworkType;
 
 import java.util.regex.Pattern;
 
@@ -31,7 +33,8 @@ import java.util.regex.Pattern;
  * @author Sean Owen
  * @author Steffen Kieß
  */
-public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
+public final class WifiConfigManager extends AsyncTask<WifiData,Object,Object> {
+
 
     private static final String TAG = WifiConfigManager.class.getSimpleName();
 
@@ -44,8 +47,9 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
     }
 
     @Override
-    protected Object doInBackground(Object... args) {
-        WifiData CallData  = new WifiData();
+    protected WifiData doInBackground(WifiData... receive) {
+
+        WifiData CallData = receive[0];
         // Start WiFi, otherwise nothing will work
         if (!wifiManager.isWifiEnabled()) {
             Log.i(TAG, "Enabling wi-fi...");
@@ -103,10 +107,7 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
         return null;
     }
 
-    /**
-     * Update the network: either create a new network or modify an existing network
-     * @param config the new network configuration
-     */
+
     private static void updateNetwork(WifiManager wifiManager, WifiConfiguration config) {
         Integer foundNetworkID = findNetworkInExistingConfig(wifiManager, config.SSID);
         if (foundNetworkID != null) {

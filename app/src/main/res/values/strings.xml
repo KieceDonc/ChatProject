@@ -19,7 +19,7 @@
     <string name="APP_Protection">Protection</string>
     <string name="APP_Password">Password</string>
     <string name="APP_ShowPassword">Show password</string>
-    <string-array name="APP_TypeEncryption">
+    <!--<string-array name="APP_TypeEncryption">
         <item>@string/ENCRYPTION_None</item>
         <item>@string/ENCRYPTION_WPA</item>
         <item>@string/ENCRYPTIOn_WPA2</item>
@@ -30,7 +30,13 @@
     <string name="ENCRYPTION_WPA">WPA</string>
     <string name="ENCRYPTIOn_WPA2">WPA2</string>
     <string name="ENCRYPTION_WPA2PSK">WPA2-PSK ( recommended )</string>
-    <string name="ENCRYPTION_WEP">WEP</string>
+    <string name="ENCRYPTION_WEP">WEP</string>-->
+    <string-array name="APP_TypeEncryption">
+        <item>@string/ENCRYPTION_None</item>
+        <item>@string/ENCRYPTION_WPA2PSK</item>
+    </string-array>
+    <string name="ENCRYPTION_None">None</string>
+    <string name="ENCRYPTION_WPA2PSK">WPA2-PSK ( recommended )</string>
 
     <string name="Cancel">Cancel</string>
     <string name="Create">Create</string>

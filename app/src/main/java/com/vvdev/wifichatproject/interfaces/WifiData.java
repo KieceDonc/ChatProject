@@ -1,5 +1,7 @@
 package com.vvdev.wifichatproject.interfaces;
 
+import android.net.wifi.WifiManager;
+
 public class WifiData {
 
     private String AP_Encryption; // Encryption for access point like WPA etc ...
@@ -38,8 +40,5 @@ public class WifiData {
     public boolean getAPHidden(){
         return AP_Hidden;
     }
-
-
-
 
 }
