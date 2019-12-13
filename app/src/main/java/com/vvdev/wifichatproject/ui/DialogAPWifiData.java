@@ -33,7 +33,7 @@ public class DialogAPWifiData {
     private LinearLayout LinearLayoutPassword;
     private CheckBox ShowPassword;
     private Spinner SpinnerEncryption;
-    private boolean Everythinggood = true; // We use this boolean to make sure everything is good before the setup of AP. This avoid stupid error to handle later
+    private boolean EverythingGood = true; // We use this boolean to make sure everything is good before the setup of AP. This avoid stupid error to handle later
 
     public void ShowDialog(final Context CurrentContext, final WifiData receiveDataCall){
         DataCall=receiveDataCall;
@@ -53,7 +53,7 @@ public class DialogAPWifiData {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // send data from the AlertDialog to the Activity
-                if(Everythinggood){
+                if(EverythingGood){
                     dialog.dismiss();
                     DataCall.setAPHidden(false);
                     WifiAP CallAP = new WifiAP(CurrentContext);
@@ -94,7 +94,7 @@ public class DialogAPWifiData {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 DataCall.setAPSSSID(s);
-                Everythinggood = count < 32; // Handle error of more than 32 character
+                EverythingGood = count < 32; // Handle error of more than 32 character
             }
 
             @Override
@@ -148,7 +148,7 @@ public class DialogAPWifiData {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 DataCall.setAPPassword(s);
-                Everythinggood = count < 32; // Handle error of more than 32 character
+                EverythingGood = count < 32; // Handle error of more than 32 character
             }
 
             @Override
