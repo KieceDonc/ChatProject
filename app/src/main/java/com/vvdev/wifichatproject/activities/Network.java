@@ -21,6 +21,7 @@ public class Network extends AppCompatActivity {
     private Context mContext;
     private AlertDialog PermSystemWrite;
     private WifiData DataCall;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +52,13 @@ public class Network extends AppCompatActivity {
         WifiJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                /**TODO need to create interface to join a wifi */
             }
         });
         OfflineAccess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                /**TODO need to handle the fact that user want to use app offline */
             }
         });
     }

@@ -46,3 +46,5 @@
     <string name="PermWriteSystemDesc">By clicking on "Activate" this will redirect you on the permission menu of the app. You will have a button and you will have to turn on this one to use this app. By clicking on "Cancel" on will not be able to use this functionality</string>
 
 </resources>
+<!--
+    TODO need to translate in french ->

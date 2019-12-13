@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+<!--TODO make a better network interface in general -->
     <TextView
         android:id="@+id/NotConnected"
         android:layout_width="match_parent"
@@ -16,7 +16,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="8dp"
         android:gravity="center"
-        android:text="@string/network_NotConnected" />
+        android:text="@string/network_NotConnected"
+       /> <!--TODO if user connected to one network make an interface-->
 
     <LinearLayout
         android:id="@+id/LayoutWifiCreate"
@@ -42,7 +43,7 @@
             app:srcCompat="@drawable/router_icon" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
@@ -88,7 +89,7 @@
             app:srcCompat="@drawable/wifi_icon" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
@@ -125,13 +126,13 @@
         android:orientation="horizontal"
         android:visibility="gone"
         android:focusable="true">
+        <!-- TODO create bluetooth network-->
 
         <ImageView
             android:id="@+id/BluetoothMode"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:contentDescription="TODO"
             tools:srcCompat="@drawable/bluetooth_icon" />
 
         <LinearLayout

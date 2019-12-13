@@ -59,10 +59,7 @@ public class DialogAPWifiData {
                     WifiAP CallAP = new WifiAP(CurrentContext);
                     CallAP.Setup(DataCall); // Setup AP
                 }else{
-                    /**TODO
-                     * create small interaction that explain why user can't continue
-                     * Like too many caracters. Inval input, etc ....
-                     * also you need to handle illegal characters **/
+                    /**TODO create small interaction that explain why user can't continue like too many caracters. Inval input, etc .... Also you need to handle illegal characters **/
                 }
 
             }
