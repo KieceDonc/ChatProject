@@ -39,8 +39,8 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
 
     private final WifiManager wifiManager;
 
-    public WifiConfigManager(WifiManager wifiManager) {
-        this.wifiManager = wifiManager;
+    public WifiConfigManager(WifiManager mWifiManager) {
+        this.wifiManager = mWifiManager;
     }
 
     @Override

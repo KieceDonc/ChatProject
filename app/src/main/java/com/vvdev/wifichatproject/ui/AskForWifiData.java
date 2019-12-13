@@ -36,15 +36,16 @@ public class AskForWifiData{
     private EditText SSIDName;
     private LinearLayout LinearLayoutPassword;
     private CheckBox ShowPassword;
-    private Spinner SinnerEncryption;
+    private Spinner SpinnerEncryption;
 
     public void ShowDialog(final Context CurrentContext){
 
         DataCall = new WifiData();
-        Activity CurrentActivity = (Activity) CurrentContext;
+        final Activity CurrentActivity = (Activity) CurrentContext;
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(CurrentContext);
         final View CustomLayout = CurrentActivity.getLayoutInflater().inflate(R.layout.access_point_parameters,null);
+        builder.setTitle(R.string.APP_TITLE);
         builder.setView(CustomLayout);        // add a button
         builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -62,25 +63,31 @@ public class AskForWifiData{
             }
         });
         AlertDialog dialog = builder.create();
+        Setup(CurrentContext, CurrentActivity,CustomLayout); // DO NOT PASS Setup() BEFORE DIALOG.SHOW(), you will get "try to invoke object on null object reference" error
         dialog.show();
+        /*dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Setup(CurrentContext, CurrentActivity); // DO NOT PASS Setup() BEFORE DIALOG.SHOW(), you will get "try to invoke object on null object reference" error
+            }
+        });*/
 
-        Setup(CurrentContext, CurrentActivity); // DO NOT PASS Setup() BEFORE DIALOG.SHOW(), you will get "try to invoke object on null object reference" error
     }    // do something with the data coming from the AlertDialog
 
-    private void Setup(Context CurrentContext, Activity CurrentActivity){
-        SetupFindViewById(CurrentActivity);
+    private void Setup(Context CurrentContext, Activity CurrentActivity, View ViewCustomLayout){
+        SetupFindViewById(ViewCustomLayout);
         SetupSSIDName();
         SetupSpinner(CurrentContext,CurrentActivity);
         SetupPassword();
         SetupCheckbox();
     }
 
-    private void SetupFindViewById(Activity CurrentActivity){
-        PasswordInput = CurrentActivity.findViewById(R.id.PasswordInput);
-        SSIDName = CurrentActivity.findViewById(R.id.SSIDInput);
-        LinearLayoutPassword = CurrentActivity.findViewById(R.id.LinearLayoutPassword);
-        ShowPassword = CurrentActivity.findViewById(R.id.ShowPassword);
-        SinnerEncryption = CurrentActivity.findViewById(R.id.SpinnerEncryption);
+    private void SetupFindViewById(View ViewCustomLayout){
+        PasswordInput = ViewCustomLayout.findViewById(R.id.PasswordInput);
+        SSIDName = ViewCustomLayout.findViewById(R.id.SSIDInput);
+        LinearLayoutPassword = ViewCustomLayout.findViewById(R.id.LinearLayoutPassword);
+        ShowPassword = ViewCustomLayout.findViewById(R.id.ShowPassword);
+        SpinnerEncryption = ViewCustomLayout.findViewById(R.id.SpinnerEncryption);
     }
 
     private void SetupSSIDName(){
@@ -104,11 +111,11 @@ public class AskForWifiData{
     private void SetupSpinner(Context CurrentContext,final Activity CurrentActivity){
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(CurrentContext, R.array.APP_TypeEncryption, android.R.layout.simple_spinner_item);  // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  // Apply the adapter to the spinner
-        SinnerEncryption.setAdapter(adapter);
-        SinnerEncryption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        SpinnerEncryption.setAdapter(adapter);
+        SpinnerEncryption.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String ItemSelected = SinnerEncryption.getSelectedItem().toString();
+                String ItemSelected = SpinnerEncryption.getSelectedItem().toString();
                 final String[] ListEncryption =  CurrentActivity.getResources().getStringArray(R.array.APP_TypeEncryption);
                 if(ItemSelected.equals(ListEncryption[0])){ // 0 normally equals to "None"   11/12/2019
                     DataCall.setAPEncryption(ACCESS_POINT_NOENCRYPTION);
@@ -142,7 +149,7 @@ public class AskForWifiData{
     }
 
     private void HideLinearLayoutPassword(){
-        LinearLayoutPassword.setVisibility(View.INVISIBLE);
+        LinearLayoutPassword.setVisibility(View.GONE);
     }
 
     private void SetupPassword(){

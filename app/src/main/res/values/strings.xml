@@ -14,7 +14,7 @@
     <string name="Icon_wifi_desc">Icon who\'s describing Wi-fi network</string>
     <string name="Icon_plane_desc">Icon who\'s describing \"without network\"</string>
 
-
+    <string name="APP_TITLE">Create your access point</string>
     <string name="APP_SSID_Name">Name (SSID)</string><!--APP = access_point_parameters-->
     <string name="APP_Protection">Protection</string>
     <string name="APP_Password">Password</string>
