@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.vvdev.wifichatproject.R;
+import com.vvdev.wifichatproject.activities.MainActivity;
+import com.vvdev.wifichatproject.interfaces.WifiConfigManager;
 import com.vvdev.wifichatproject.interfaces.WifiData;
 
 public class AskForWifiData{
@@ -25,6 +27,7 @@ public class AskForWifiData{
     private final static String ACCESS_POINT_WPA = "WPA";
     private final static String ACCESS_POINT_WPA2 = "WPA2";
     private final static String ACCESS_POINT_WPA2_EAP = "WPA2-EAP";
+    private final static String ACCESS_POINT_WPA2_PSK = "WPA2-PSk";
     private final static String ACCESS_POINT_WEP = "WEP";
 
     private WifiData DataCall;
@@ -35,25 +38,27 @@ public class AskForWifiData{
     private CheckBox ShowPassword;
     private Spinner SinnerEncryption;
 
-    public void ShowDialog(Context CurrentContext){
+    public void ShowDialog(final Context CurrentContext){
 
         DataCall = new WifiData();
         Activity CurrentActivity = (Activity) CurrentContext;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(CurrentContext);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(CurrentContext);
         final View CustomLayout = CurrentActivity.getLayoutInflater().inflate(R.layout.access_point_parameters,null);
         builder.setView(CustomLayout);        // add a button
         builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                dialog.dismiss();
             }
         });
         builder.setPositiveButton(R.string.Create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // send data from the AlertDialog to the Activity
-                DataCall.setAPHidden(true);
+                DataCall.setAPHidden(false);
+                MainActivity CallMainActivity = new MainActivity();
+                CallMainActivity.AskForDataWifiDone();
             }
         });
         AlertDialog dialog = builder.create();
@@ -109,7 +114,7 @@ public class AskForWifiData{
                     DataCall.setAPEncryption(ACCESS_POINT_NOENCRYPTION);
                     HideLinearLayoutPassword();
                 }else if(ItemSelected.equals(ListEncryption[3])){// 3 normally equals to "WPA2-EAP ( recommended )"   11/12/2019
-                    DataCall.setAPEncryption(ACCESS_POINT_WPA2_EAP);
+                    DataCall.setAPEncryption(ACCESS_POINT_WPA2_PSK);
                     ShowLinearLayoutPassword();
                 }else if(ItemSelected.equals(ListEncryption[2])){ //2 normally equals to "WPA2"   11/12/2019
                     DataCall.setAPEncryption(ACCESS_POINT_WPA2);

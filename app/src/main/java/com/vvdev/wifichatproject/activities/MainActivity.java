@@ -1,5 +1,6 @@
 package com.vvdev.wifichatproject.activities;
 
+import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.vvdev.wifichatproject.R;
+import com.vvdev.wifichatproject.interfaces.WifiConfigManager;
 import com.vvdev.wifichatproject.ui.AskForWifiData;
 
 import java.lang.reflect.Method;
@@ -25,8 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
         AskForWifiData Call = new AskForWifiData();
         Call.ShowDialog(this);
+    }
 
-
+    public void AskForDataWifiDone(){
+        WifiManager wifiManager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        new WifiConfigManager(wifiManager).execute();
     }
 
 }
