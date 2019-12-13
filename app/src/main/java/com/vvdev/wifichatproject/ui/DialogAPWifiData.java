@@ -33,6 +33,7 @@ public class DialogAPWifiData {
     private LinearLayout LinearLayoutPassword;
     private CheckBox ShowPassword;
     private Spinner SpinnerEncryption;
+    private boolean Everythinggood = true; // We use this boolean to make sure everything is good before the setup of AP. This avoid stupid error to handle later
 
     public void ShowDialog(final Context CurrentContext, final WifiData receiveDataCall){
         DataCall=receiveDataCall;
@@ -52,10 +53,17 @@ public class DialogAPWifiData {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // send data from the AlertDialog to the Activity
-                dialog.dismiss();
-                DataCall.setAPHidden(false);
-                WifiAP CallAP = new WifiAP(CurrentContext);
-                CallAP.Setup(DataCall);
+                if(Everythinggood){
+                    dialog.dismiss();
+                    DataCall.setAPHidden(false);
+                    WifiAP CallAP = new WifiAP(CurrentContext);
+                    CallAP.Setup(DataCall); // Setup AP
+                }else{
+                    /**TODO
+                     * create small interaction that explain why user can't continue
+                     * Like too many caracters. Inval input, etc ....
+                     * also you need to handle illegal characters **/
+                }
 
             }
         });
@@ -86,6 +94,7 @@ public class DialogAPWifiData {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 DataCall.setAPSSSID(s);
+                Everythinggood = count < 32; // Handle error of more than 32 character
             }
 
             @Override
@@ -115,7 +124,7 @@ public class DialogAPWifiData {
                     DataCall.setAPEncryption(ACCESS_POINT_WPA2_PSK);
                     ShowLinearLayoutPassword();
                 }else{
-                    Log.e("DialogAPWifiData-Spinner","Error to get encryption. String value of selected item="+ItemSelected);
+                    Log.e("DialogAPWifiDataSpinner","Error to get encryption. String value of selected item="+ItemSelected);
                 }
             }
 
@@ -139,6 +148,7 @@ public class DialogAPWifiData {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 DataCall.setAPPassword(s);
+                Everythinggood = count < 32; // Handle error of more than 32 character
             }
 
             @Override

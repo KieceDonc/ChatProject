@@ -44,7 +44,7 @@ public class Network extends AppCompatActivity {
                 if(!checkSystemWritePermission()){ // if we don't have write system perm
                     PermSystemWrite.show(); // we show dialog
                 }else{
-                    StartCreatingAP();
+                    StartCreatingAP(); // Show dialog to create AP
                 }
             }
         });
