@@ -14,7 +14,7 @@
     <string name="Icon_wifi_desc">Icon who\'s describing Wi-fi network</string>
     <string name="Icon_plane_desc">Icon who\'s describing \"without network\"</string>
 
-
+    <string name="APP_TITLE">Create your access point</string>
     <string name="APP_SSID_Name">Name (SSID)</string><!--APP = access_point_parameters-->
     <string name="APP_Protection">Protection</string>
     <string name="APP_Password">Password</string>
@@ -23,13 +23,13 @@
         <item>@string/ENCRYPTION_None</item>
         <item>@string/ENCRYPTION_WPA</item>
         <item>@string/ENCRYPTIOn_WPA2</item>
-        <item>@string/ENCRYPTION_WPA2EAP</item>
+        <item>@string/ENCRYPTION_WPA2PSK</item>
         <item>@string/ENCRYPTION_WEP</item>
     </string-array>
     <string name="ENCRYPTION_None">None</string>
     <string name="ENCRYPTION_WPA">WPA</string>
     <string name="ENCRYPTIOn_WPA2">WPA2</string>
-    <string name="ENCRYPTION_WPA2EAP">WPA2-EAP ( recommended )</string>
+    <string name="ENCRYPTION_WPA2PSK">WPA2-PSK ( recommended )</string>
     <string name="ENCRYPTION_WEP">WEP</string>
 
     <string name="Cancel">Cancel</string>

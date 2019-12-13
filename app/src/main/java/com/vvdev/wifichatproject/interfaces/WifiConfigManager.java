@@ -39,8 +39,8 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
 
     private final WifiManager wifiManager;
 
-    public WifiConfigManager(WifiManager wifiManager) {
-        this.wifiManager = wifiManager;
+    public WifiConfigManager(WifiManager mWifiManager) {
+        this.wifiManager = mWifiManager;
     }
 
     @Override
@@ -91,6 +91,9 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
                     case WPA:
                         changeNetworkWPA(wifiManager, CallData);
                         break;
+                    case WPA2_PSK:
+                        changeNetworkWPA2PSK(wifiManager, CallData);
+                        break;
                     case WPA2_EAP:
                         changeNetworkWPA2EAP(wifiManager, CallData);
                         break;
@@ -140,7 +143,7 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
 
     // Adding a WEP network
     private static void changeNetworkWEP(WifiManager wifiManager, WifiData CallData) {
-        WifiConfiguration config = changeNetworkCommon(wifiResult);
+        WifiConfiguration config = changeNetworkCommon(CallData);
         config.wepKeys[0] = quoteNonHex(CallData.getAPPassword(), 10, 26, 58);
         config.wepTxKeyIndex = 0;
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
@@ -154,7 +157,7 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
 
     // Adding a WPA or WPA2 network
     private static void changeNetworkWPA(WifiManager wifiManager, WifiData CallData) {
-        WifiConfiguration config = changeNetworkCommon(wifiResult);
+        WifiConfiguration config = changeNetworkCommon(CallData);
         // Hex passwords that are 64 bits long are not to be quoted.
         config.preSharedKey = quoteNonHex(CallData.getAPPassword(), 64);
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
@@ -169,11 +172,24 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
         updateNetwork(wifiManager, config);
     }
 
+    private static void changeNetworkWPA2PSK(WifiManager wifiManager, WifiData CallData){
+        WifiConfiguration config = changeNetworkCommon(CallData);
+        config.SSID = CallData.getAPSSID();
+        config.preSharedKey = CallData.getAPPassword();
+        config.hiddenSSID = false;
+        config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+        config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+        config.allowedKeyManagement.set(4);
+        config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+        config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+        updateNetwork(wifiManager,config);
+    }
+
     // Adding a WPA2 enterprise (EAP) network
     private static void changeNetworkWPA2EAP(WifiManager wifiManager, WifiData CallData) {
-        WifiConfiguration config = changeNetworkCommon(wifiResult);
+        WifiConfiguration config = changeNetworkCommon(CallData);
         // Hex passwords that are 64 bits long are not to be quoted.
-        config.preSharedKey = quoteNonHex(CallData.getAPPassword(), 64);
+        /*config.preSharedKey = quoteNonHex(CallData.getAPPassword(), 64);
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
         config.allowedProtocols.set(WifiConfiguration.Protocol.RSN); // For WPA2
         config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_EAP);
@@ -186,12 +202,12 @@ public final class WifiConfigManager extends AsyncTask<Object,Object,Object> {
         config.enterpriseConfig.setPassword(CallData.getAPPassword());
         config.enterpriseConfig.setEapMethod(parseEap(wifiResult.getEapMethod()));
         config.enterpriseConfig.setPhase2Method(parsePhase2(wifiResult.getPhase2Method()));
-        updateNetwork(wifiManager, config);
+        updateNetwork(wifiManager, config);*/
     }
 
     // Adding an open, unsecured network
     private static void changeNetworkUnEncrypted(WifiManager wifiManager, WifiData CallData) {
-        WifiConfiguration config = changeNetworkCommon(wifiResult);
+        WifiConfiguration config = changeNetworkCommon(CallData);
         config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
         updateNetwork(wifiManager, config);
     }

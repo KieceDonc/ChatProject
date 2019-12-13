@@ -22,7 +22,9 @@ enum WifiNetworkType {
     WEP,
     WPA,
     NO_PASSWORD,
+    WPA2_PSK,
     WPA2_EAP;
+
 
     static WifiNetworkType forIntentValue(String networkTypeString) {
         if (networkTypeString == null) {
@@ -34,6 +36,8 @@ enum WifiNetworkType {
                 return WPA;
             case "WPA2-EAP":
                 return WPA2_EAP;
+            case "WPA2-PSK":
+                return WPA2_PSK;
             case "WEP":
                 return WEP;
             case "nopass":
