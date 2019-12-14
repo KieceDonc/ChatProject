@@ -6,16 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 
-import com.vvdev.wifichatproject.Manifest;
 import com.vvdev.wifichatproject.R;
 
-public class DialogSystemPerm extends AlertDialog.Builder {
+public class DialogSystemWritePerm extends AlertDialog.Builder {
 
     private Context context;
 
-    public DialogSystemPerm(final Context receive) {
+    public DialogSystemWritePerm(final Context receive) {
         super(receive);
         context=receive;
     }

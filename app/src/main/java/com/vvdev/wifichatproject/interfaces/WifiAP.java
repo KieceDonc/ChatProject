@@ -3,7 +3,11 @@ package com.vvdev.wifichatproject.interfaces;
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.vvdev.wifichatproject.R;
 
 import java.util.regex.Pattern;
 

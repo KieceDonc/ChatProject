@@ -14,6 +14,9 @@
     <string name="Icon_wifi_desc">Icon who\'s describing Wi-fi network</string>
     <string name="Icon_plane_desc">Icon who\'s describing \"without network\"</string>
 
+    <string name="AP_success">Access point successfully created</string>
+    <string name="AP_fail">Fail to create access point</string>
+
     <string name="APP_TITLE">Create your access point</string>
     <string name="APP_SSID_Name">Name (SSID)</string><!--APP = access_point_parameters-->
     <string name="APP_Protection">Protection</string>
@@ -44,7 +47,7 @@
 
     <string name="PermWriteSystemTitle">You need to activate write settings system !</string>
     <string name="PermWriteSystemDesc">By clicking on "Activate" this will redirect you on the permission menu of the app. You will have a button and you will have to turn on this one to use this app. By clicking on "Cancel" on will not be able to use this functionality</string>
-
+    <!--
+        TODO need to translate in french -->
 </resources>
-<!--
-    TODO need to translate in french ->
+

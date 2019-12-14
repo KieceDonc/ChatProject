@@ -14,7 +14,7 @@
  * Copyright (C) 2012 LISA team
  */
 
-package com.vvdev.wifichatproject.old;
+package com.vvdev.wifichatproject.interfaces;
 
 import java.util.List;
 
@@ -30,6 +30,12 @@ public class WifiHandler {
     public static final int WEP = 1;
     public static final int WAP = 2;
     public static final int OPEN_NETWORK = 3;
+
+    public static final int WIFI_CONNECT_SUCCESS = 565112;
+    public static final int WIFI_FAIL_ADD_CONFIG = 456465;
+    public static final int WIFI_FAIL_DISCONNECT_OLD_NETWORK = 455685;
+    public static final int WIFI_FAIL_ENABLE_NETWORK = 454864;
+    public static final int WIFI_FAIL_TO_CONNECT = 445358;
 
     public static final String TAG = "LISA_Network";
 
@@ -59,7 +65,7 @@ public class WifiHandler {
     /**
      * Function checkWifiEnabled checks if the WiFi connection
      * is enabled on the device.
-     * @param wifiMgr
+     * @param
      * @return true  if the WiFi connection is enabled,
      *               false if the WiFi connection is disabled
      */
@@ -70,7 +76,7 @@ public class WifiHandler {
 
     /**
      * Function enableWifi enables WiFi connection on the device.
-     * @param wifiMgr
+     * @param
      * @return true  if the attempt to enable WiFi succeeded,
      *               false if the attempt to enable WiFi failed.
      */
@@ -81,7 +87,7 @@ public class WifiHandler {
 
     /**
      * Function disableWifi disables WiFi connection on the device.
-     * @param wifiMgr
+     * @param
      * @return true  if WiFi connection was disabled,
      *               false if attempt to disable WiFi failed.
      */
@@ -163,7 +169,7 @@ public class WifiHandler {
      * Function getWifiInRange returns all the WiFi networks that are
      * accessible through the access point (device AP) found during the
      * last scan.
-     * @param wifi
+     * @param
      * @return List of ScanResult containing information on all WiFi networks
      *               discovered in the range.
      */
@@ -208,9 +214,12 @@ public class WifiHandler {
      * @return true  if connection to selected network succeeded
      *               false if connection to selected network failed
      */
-    public boolean connectToSelectedNetwork(String networkSSID, String networkPassword) {
+
+    /**
+     * 0 = success to connect to selected network
+     * */
+    public int connectToSelectedNetwork(String networkSSID, String networkPassword, String SecurityProtocol) {
         int networkId;
-        int SecurityProtocol = WEP;
 
         // Clear wifi configuration variable
         clearWifiConfig();
@@ -220,7 +229,7 @@ public class WifiHandler {
         Log.d(TAG, "SSID Received: " + wifiConf.SSID);
         switch(SecurityProtocol) {
             // WEP "security".
-            case WEP:
+            case "WEP":
                 wifiConf.wepKeys[0] = "\"" + networkPassword + "\"";
                 wifiConf.wepTxKeyIndex = 0;
                 wifiConf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
@@ -228,12 +237,12 @@ public class WifiHandler {
                 break;
 
             // WAP security. We have to set preSharedKey.
-            case WAP:
+            case "WAP":
                 wifiConf.preSharedKey = "\""+ networkPassword +"\"";
                 break;
 
             // Network without security.
-            case OPEN_NETWORK:
+            case "OPEN_NETWORK":
                 wifiConf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
                 break;
         }
@@ -241,27 +250,27 @@ public class WifiHandler {
         // Add WiFi configuration to list of recognizable networks
         if ((networkId = wifiMgr.addNetwork(wifiConf)) == -1) {
             Log.d("TAG", "Failed to add network configuration!");
-            return false;
+            return WIFI_FAIL_ADD_CONFIG;
         }
 
         // Disconnect from current WiFi connection
         if (!disconnectFromWifi()) {
             Log.d("TAG", "Failed to disconnect from network!");
-            return false;
+            return WIFI_FAIL_DISCONNECT_OLD_NETWORK;
         }
 
         // Enable network to be connected
         if (!wifiMgr.enableNetwork(networkId, true)) {
             Log.d("TAG", "Failed to enable network!");
-            return false;
+            return WIFI_FAIL_ENABLE_NETWORK;
         }
 
         // Connect to network
         if (!wifiMgr.reconnect()) {
             Log.d("TAG", "Failed to connect!");
-            return false;
+            return WIFI_FAIL_TO_CONNECT;
         }
 
-        return true;
+        return WIFI_CONNECT_SUCCESS;
     }
 }

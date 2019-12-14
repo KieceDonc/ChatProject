@@ -2,7 +2,6 @@ package com.vvdev.wifichatproject.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -13,8 +12,10 @@ import android.widget.LinearLayout;
 
 import com.vvdev.wifichatproject.R;
 import com.vvdev.wifichatproject.interfaces.WifiData;
+import com.vvdev.wifichatproject.interfaces.WifiHandler;
 import com.vvdev.wifichatproject.ui.DialogAPWifiData;
-import com.vvdev.wifichatproject.ui.DialogSystemPerm;
+import com.vvdev.wifichatproject.ui.DialogJoinWifi;
+import com.vvdev.wifichatproject.ui.DialogSystemWritePerm;
 
 public class Network extends AppCompatActivity {
 
@@ -28,11 +29,12 @@ public class Network extends AppCompatActivity {
         setContentView(R.layout.network);
         mContext=this;
 
-        DialogSystemPerm CallDialogSystem =  new DialogSystemPerm(mContext);
+        DialogSystemWritePerm CallDialogSystem =  new DialogSystemWritePerm(mContext);
         PermSystemWrite = CallDialogSystem.get(); // Get the alert dialog to ask to enable write system perm
 
         DataCall = new WifiData();
         DataCall.setWifiManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE));
+        DataCall.setCallWifiHandler(new WifiHandler());
 
 
         LinearLayout CreateAP = findViewById(R.id.LayoutWifiCreate);
@@ -45,13 +47,16 @@ public class Network extends AppCompatActivity {
                 if(!checkSystemWritePermission()){ // if we don't have write system perm
                     PermSystemWrite.show(); // we show dialog
                 }else{
-                    StartCreatingAP(); // Show dialog to create AP
+                    DialogAPWifiData Call = new DialogAPWifiData();
+                    Call.ShowDialog(mContext,DataCall); // Show dialog to create AP
                 }
             }
         });
         WifiJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DialogJoinWifi Call = new DialogJoinWifi(mContext, DataCall);
+                Call.Show();
                 /**TODO need to create interface to join a wifi */
             }
         });
@@ -61,11 +66,6 @@ public class Network extends AppCompatActivity {
                 /**TODO need to handle the fact that user want to use app offline */
             }
         });
-    }
-
-    private void StartCreatingAP(){
-        DialogAPWifiData Call = new DialogAPWifiData();
-        Call.ShowDialog(mContext,DataCall);
     }
 
     private boolean checkSystemWritePermission() {

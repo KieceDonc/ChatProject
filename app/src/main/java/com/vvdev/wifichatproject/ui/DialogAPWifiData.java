@@ -3,7 +3,6 @@ package com.vvdev.wifichatproject.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.wifi.WifiManager;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -40,7 +39,7 @@ public class DialogAPWifiData {
         final Activity CurrentActivity = (Activity) CurrentContext;
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(CurrentContext);
-        final View CustomLayout = CurrentActivity.getLayoutInflater().inflate(R.layout.access_point_parameters,null);
+        final View CustomLayout = CurrentActivity.getLayoutInflater().inflate(R.layout.network_ap_parameters,null);
         builder.setTitle(R.string.APP_TITLE);
         builder.setView(CustomLayout);        // add a button
         builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
