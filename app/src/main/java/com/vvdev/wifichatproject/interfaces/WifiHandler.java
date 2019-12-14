@@ -52,7 +52,6 @@ public class WifiHandler {
      */
     public WifiHandler(Context context, WifiData receive) {
         wifiInfo = getWifiInfo(context);            // gets wifiInfo in the current context
-        wifiConf = getWifiConf(context);            // gets wifiConf in the current context
         wifiScan = getWifiInRange();                    // gets wifiScan in the current context
         CallData=receive;
     }
@@ -116,18 +115,8 @@ public class WifiHandler {
      * information from the current connection
      * @return WifiConfiguration object created.
      */
-    public WifiConfiguration getWifiConf(Context context) {
-        WifiConfiguration wifiConfiguration = new WifiConfiguration();
-
-        if (wifiInfo == null) {
-            Log.d("TAG", "WifiInfo object is empty");
-            return null;
-        }
-
-        wifiConfiguration.SSID = wifiInfo.getSSID();
-        wifiConfiguration.networkId = wifiInfo.getNetworkId();
-
-        return wifiConfiguration;
+    public WifiConfiguration getWifiConf() {
+        return CallData.createConfig();
     }
 
     /**

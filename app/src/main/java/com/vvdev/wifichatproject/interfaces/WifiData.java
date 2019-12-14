@@ -28,35 +28,35 @@ public class WifiData {
 
     public void setAPEncryption(String ReceiveString){
         AP_Encryption = ReceiveString;
-    }
+    } // set the encryption chosen by the user for the access point ( WPA2-PSK, none, etc ... )
 
     public String getAPEncryption(){
         return AP_Encryption;
-    }
+    } // get the encryption chosen by the user for the access point ( WPA2-PSK, none, etc ... )
 
     public void setAPPassword(CharSequence ReceiveString){
         AP_Password = ReceiveString;
-    }
+    } // set the password chosen by the user for the access point
 
     public String getAPPassword(){
         return String.valueOf(AP_Password);
-    }
+    } // get the password chosen by the user for the access point
 
     public void setAPSSSID(CharSequence ReceiveString){
         AP_SSID = ReceiveString;
-    }
+    } // set the ssid name chosen by the user for access point
 
     public String getAPSSID(){
         return String.valueOf(AP_SSID);
-    }
+    } // return the ssid name chosen by the user for access point
 
     public void setAPHidden(boolean Receive){
         AP_Hidden = Receive;
-    }
+    } // set if the wifi access point will be hide or not. Chosen by user
 
     public boolean getAPHidden(){
         return AP_Hidden;
-    }
+    } // get if the wifi access point will be hide or not. Chosen by user
 
     public void setWifiManager(WifiManager receive){
         wifiManager = receive;
@@ -64,7 +64,7 @@ public class WifiData {
 
     public WifiManager getWifiManager(){
         return wifiManager;
-    }
+    } // return the WifiManager
 
     public void setCallWifiHandler(WifiHandler t){
         CallWifiHandler =t;
@@ -72,7 +72,7 @@ public class WifiData {
 
     public WifiHandler getCallWifiHandler(){
         return CallWifiHandler;
-    }
+    } // Call this when you want to call method in WifiHandler
 
     public WifiConfiguration createConfig() {
         WifiConfiguration config = new WifiConfiguration();
@@ -125,11 +125,11 @@ public class WifiData {
         }else{
             Log.e("WifiAP_Setup()","wrong encryption string receive :"+Encryption);
         }
-    }
+    } //setup the access point
 
     public static String quoteNonHex(String value, int... allowedLengths) {
         return isHexOfLength(value, allowedLengths) ? value : convertToQuotedString(value);
-    }
+    } // use for WPA2_PSK
 
     public static final Pattern HEX_DIGITS = Pattern.compile("[0-9A-Fa-f]+");
 
@@ -146,7 +146,7 @@ public class WifiData {
             }
         }
         return false;
-    }
+    } // use for WPA2_PSK
 
     public static String convertToQuotedString(String s) {
         if (s == null || s.isEmpty()) {
@@ -157,7 +157,7 @@ public class WifiData {
             return s;
         }
         return '\"' + s + '\"';
-    }
+    } // use for WPA2_PSK
 
 
 }

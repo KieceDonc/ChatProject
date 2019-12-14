@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.vvdev.wifichatproject.R;
-import com.vvdev.wifichatproject.interfaces.WifiAP;
 import com.vvdev.wifichatproject.interfaces.WifiData;
 
 import java.util.Objects;
