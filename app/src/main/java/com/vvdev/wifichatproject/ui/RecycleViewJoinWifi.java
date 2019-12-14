@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vvdev.wifichatproject.R;
@@ -49,6 +50,7 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
         return WifiList.size();
     }
 
+    @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -68,25 +70,38 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
         CurrentContext.unregisterReceiver(ScanWifiNetwork);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView SSIDName;
+        private TextView SSIDName;
+        private int SignalPower;
+        private String encryption;
 
-        public MyViewHolder(final View itemView) {
+        MyViewHolder(final View itemView) {
             super(itemView);
 
             SSIDName = itemView.findViewById(R.id.SSIDName);
+            ImageView imgSignalPower = itemView.findViewById(R.id.SignalPower);
+            if (SignalPower > -50) {
+                imgSignalPower.setImageResource(R.drawable.wifi_icon_excellent);
+            }else if(SignalPower>-60){
+                imgSignalPower.setImageResource(R.drawable.wifi_icon_good);
+            }else if(SignalPower>-70){
+                imgSignalPower.setImageResource(R.drawable.wifi_icon_fair);
+            }else{
+                imgSignalPower.setImageResource(R.drawable.wifi_icon_weak);
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CallData.getCallWifiHandler().
+                    CallData.getCallWifiHandler().connectToSelectedNetwork();// need to handle password ( Does user have been connected to this network ? Yes -> Try to connect and if failure ask for password, No -> Ask for password
                 }
             });
         }
 
         public void display(ScanResult pair) {
             SSIDName.setText(pair.SSID);
+            SignalPower = pair.level;
         }
     }
 
