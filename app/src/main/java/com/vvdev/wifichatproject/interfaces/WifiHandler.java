@@ -25,17 +25,13 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-public class WifiHandler {
-    //constants
-    public static final int WEP = 1;
-    public static final int WAP = 2;
-    public static final int OPEN_NETWORK = 3;
+import static com.vvdev.wifichatproject.interfaces.WifiData.WIFI_CONNECT_SUCCESS;
+import static com.vvdev.wifichatproject.interfaces.WifiData.WIFI_FAIL_ADD_CONFIG;
+import static com.vvdev.wifichatproject.interfaces.WifiData.WIFI_FAIL_DISCONNECT_OLD_NETWORK;
+import static com.vvdev.wifichatproject.interfaces.WifiData.WIFI_FAIL_ENABLE_NETWORK;
+import static com.vvdev.wifichatproject.interfaces.WifiData.WIFI_FAIL_TO_CONNECT;
 
-    public static final int WIFI_CONNECT_SUCCESS = 565112;
-    public static final int WIFI_FAIL_ADD_CONFIG = 456465;
-    public static final int WIFI_FAIL_DISCONNECT_OLD_NETWORK = 455685;
-    public static final int WIFI_FAIL_ENABLE_NETWORK = 454864;
-    public static final int WIFI_FAIL_TO_CONNECT = 445358;
+public class WifiHandler {
 
     public static final String TAG = "LISA_Network";
 
@@ -43,23 +39,22 @@ public class WifiHandler {
     WifiConfiguration wifiConf;             /* WifiConfiguration object */
 
     /** dfsdfsdfsdf. */
-    WifiManager wifiMgr;                            /* WifiManager object */
-
-    /** dfsdfsdfsdf. */
     WifiInfo wifiInfo;                              /* WifiInfo object */
 
     /** dfsdfsdfsdf. */
     List<ScanResult> wifiScan;              /* List of ScanResult objects */
+    
+    WifiData CallData;
 
     /**
      * Constructor initializes WifiManager and WifiInfo.
      * @param context
      */
-    public WifiHandler(Context context) {
-        wifiMgr  = getWifiManager(context);     // gets wifiMgr in the current context
+    public WifiHandler(Context context, WifiData receive) {
         wifiInfo = getWifiInfo(context);            // gets wifiInfo in the current context
         wifiConf = getWifiConf(context);            // gets wifiConf in the current context
         wifiScan = getWifiInRange();                    // gets wifiScan in the current context
+        CallData=receive;
     }
 
     /**
@@ -71,54 +66,32 @@ public class WifiHandler {
      */
     public boolean checkWifiEnabled() {
         // checks if WiFi is enabled
-        return (wifiMgr != null && wifiMgr.isWifiEnabled());
+        return (CallData.getWifiManager() != null && CallData.getWifiManager().isWifiEnabled());
     }
 
     /**
      * Function enableWifi enables WiFi connection on the device.
-     * @param
      * @return true  if the attempt to enable WiFi succeeded,
      *               false if the attempt to enable WiFi failed.
      */
     public boolean enableWifi() {
         // enables WiFi connection
-        return wifiMgr.setWifiEnabled(true);
+        return CallData.getWifiManager().setWifiEnabled(true);
     }
 
     /**
      * Function disableWifi disables WiFi connection on the device.
-     * @param
      * @return true  if WiFi connection was disabled,
      *               false if attempt to disable WiFi failed.
      */
     public boolean disableWifi() {
         // disables WiFi connection
-        return wifiMgr.setWifiEnabled(false);
-    }
-
-    /**
-     * Function getWifiManager gets the WiFiManager object from the device.
-     * @param context
-     * @return WifiManager object. Also sets the class variable
-     *               wifiMgr as the WifiManager object returned.
-     */
-    public WifiManager getWifiManager(Context context) {
-        WifiManager wifiMgr = null;
-
-        // gets WifiManager obj from the system
-        wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
-        if (wifiMgr == null) {
-            Log.d("TAG", "WIFI_SERVICE is the wrong service name.");
-        }
-
-        return wifiMgr;
+        return CallData.getWifiManager().setWifiEnabled(false);
     }
 
     /**
      * Function getWifiInfo gets the current WiFi connection information in a
      * WifiInfo object from the device.
-     * @param context
      * @return wifiInfo created object or
      *               null       if wifi is not enabled.
      */
@@ -127,7 +100,7 @@ public class WifiHandler {
 
         // gets WiFi network info of the current connection
         if (checkWifiEnabled()) {
-            wifiInfo = (WifiInfo) wifiMgr.getConnectionInfo();
+            wifiInfo = (WifiInfo) CallData.getWifiManager().getConnectionInfo();
         }
 
         if (wifiInfo == null) {
@@ -141,7 +114,6 @@ public class WifiHandler {
      * Function that returns a WifiConfiguration object from the WifiInfo
      * object from the class. If wifiInfo exists, then we are able to retrieve
      * information from the current connection
-     * @param context
      * @return WifiConfiguration object created.
      */
     public WifiConfiguration getWifiConf(Context context) {
@@ -169,13 +141,12 @@ public class WifiHandler {
      * Function getWifiInRange returns all the WiFi networks that are
      * accessible through the access point (device AP) found during the
      * last scan.
-     * @param
      * @return List of ScanResult containing information on all WiFi networks
      *               discovered in the range.
      */
     public List<ScanResult> getWifiInRange() {
         // gets ~last~ list of WiFi networks accessible through the access point.
-        return (wifiScan = (List<ScanResult>) wifiMgr.getScanResults());
+        return (wifiScan = (List<ScanResult>) CallData.getWifiManager().getScanResults());
     }
 
     /**
@@ -185,10 +156,10 @@ public class WifiHandler {
      */
     public boolean scanWifiInRange() {
         if (!checkWifiEnabled()) {
-            return false;
+            CallData.getWifiManager().setWifiEnabled(true);
         }
 
-        if (!wifiMgr.startScan()) {
+        if (!CallData.getWifiManager().startScan()) {
             Log.d("TAG", "Failed to scan wifi's in range.");
             return false;
         }
@@ -202,7 +173,7 @@ public class WifiHandler {
      *               false if disconnection failed
      */
     public boolean disconnectFromWifi() {
-        return (wifiMgr.disconnect());
+        return (CallData.getWifiManager().disconnect());
     }
 
     /**
@@ -248,7 +219,7 @@ public class WifiHandler {
         }
 
         // Add WiFi configuration to list of recognizable networks
-        if ((networkId = wifiMgr.addNetwork(wifiConf)) == -1) {
+        if ((networkId = CallData.getWifiManager().addNetwork(wifiConf)) == -1) {
             Log.d("TAG", "Failed to add network configuration!");
             return WIFI_FAIL_ADD_CONFIG;
         }
@@ -260,13 +231,13 @@ public class WifiHandler {
         }
 
         // Enable network to be connected
-        if (!wifiMgr.enableNetwork(networkId, true)) {
+        if (!CallData.getWifiManager().enableNetwork(networkId, true)) {
             Log.d("TAG", "Failed to enable network!");
             return WIFI_FAIL_ENABLE_NETWORK;
         }
 
         // Connect to network
-        if (!wifiMgr.reconnect()) {
+        if (!CallData.getWifiManager().reconnect()) {
             Log.d("TAG", "Failed to connect!");
             return WIFI_FAIL_TO_CONNECT;
         }

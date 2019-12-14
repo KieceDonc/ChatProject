@@ -17,13 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.vvdev.wifichatproject.R;
-import com.vvdev.wifichatproject.interfaces.WifiAP;
 import com.vvdev.wifichatproject.interfaces.WifiData;
 
-public class DialogAPWifiData {
+import static com.vvdev.wifichatproject.interfaces.WifiData.ACCESS_POINT_NOENCRYPTION;
+import static com.vvdev.wifichatproject.interfaces.WifiData.ACCESS_POINT_WPA2_PSK;
 
-    private final static String ACCESS_POINT_NOENCRYPTION = "nopass";
-    private final static String ACCESS_POINT_WPA2_PSK = "WPA2-PSK";
+public class DialogAPWifiData {
 
     private WifiData DataCall;
 
@@ -55,8 +54,7 @@ public class DialogAPWifiData {
                 if(EverythingGood){
                     dialog.dismiss();
                     DataCall.setAPHidden(false);
-                    WifiAP CallAP = new WifiAP(CurrentContext);
-                    CallAP.Setup(DataCall); // Setup AP
+                    DataCall.setupAccessPoint(CurrentContext);
                 }else{
                     /**TODO create small interaction that explain why user can't continue like too many caracters. Inval input, etc .... Also you need to handle illegal characters **/
                 }

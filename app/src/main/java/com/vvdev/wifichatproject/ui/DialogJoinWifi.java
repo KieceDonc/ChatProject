@@ -28,7 +28,7 @@ public class DialogJoinWifi extends AlertDialog.Builder {
     }
 
     public void Show(){
-        DataCall.getWifiManager().startScan(); // start scanning all wifi network
+        DataCall.getCallWifiHandler().scanWifiInRange(); // start scanning all wifi network
         Activity CurrentActivity = (Activity) CurrentContext;
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(CurrentContext);

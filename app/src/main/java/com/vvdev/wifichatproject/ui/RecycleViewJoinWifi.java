@@ -102,6 +102,7 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
         public void display(ScanResult pair) {
             SSIDName.setText(pair.SSID);
             SignalPower = pair.level;
+            encryption = pair.capabilities;
         }
     }
 
