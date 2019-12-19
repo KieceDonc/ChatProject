@@ -106,21 +106,29 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
                 @Override
                 public void onClick(View view) {
 
+
                     List<WifiConfiguration>  AllWifiConfiguration = CallData.getListWifiConfiguration();
                     int WifiConfigurationMatch = -1; // -1 mean no wificonfiguration match but if wificonfiguration != -1 this mean that user have already connect to thsi network
                     for( int x=0;x<AllWifiConfiguration.size();x++){
-                        if(AllWifiConfiguration.get(x).BSSID==CurrentPair.BSSID){
+                        if(AllWifiConfiguration.get(x).BSSID.equals(CurrentPair.BSSID)){
                             WifiConfigurationMatch = x;
                         }
                     }
 
-                    if(WifiConfigurationMatch==-1){
+                    if(WifiConfigurationMatch==-1){ // if no match, ask to user to enter password, else ...
 
-                    }else{
+                        if(CurrentPair.capabilities.contains("OPEN")){
+                            CallData.connectToSelectedNetwork(CallData.getNoneConfig(CurrentPair.SSID,false),true);
+                        } else if (CurrentPair.capabilities.contains("WPA2-PSK")){
+                            // TODO need to handle password ask
+                            CallData.connectToSelectedNetwork(CallData.getWPA2PSKConfig(CurrentPair.SSID," replace by the password handler ",false),true);
+                        }else{
+                            // TODO need to explain to user that this app don't handle this type of configuration and he need to add this by his own. Need to ask him if he want to redirect to wifi menu of the phone to add the wificonfiguration manually
+                        }
+                    }else {
                         WifiConfiguration GoodConfiguration = AllWifiConfiguration.get(WifiConfigurationMatch);
-                        CallData.connectToSelectedNetwork(GoodConfiguration.SSID,GoodConfiguration.preSharedKey,GoodConfiguration.,GoodConfiguration.hiddenSSID);
+                        CallData.connectToSelectedNetwork(GoodConfiguration, false);
                     }
-                   // CallData.connectToSelectedNetwork();// TODO need to handle password ( Does user have been connected to this network ? Yes -> Try to connect and if failure ask for password, No -> Ask for password
                 }
             });
         }

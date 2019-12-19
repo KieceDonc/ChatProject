@@ -23,8 +23,9 @@ public class WifiData {
 
     public final static String ACCESS_POINT_NOENCRYPTION = "nopass";
     public final static String ACCESS_POINT_WPA2_PSK = "WPA2-PSK";
-    public final static String WIFI_ENCRYPTION_WPA = "WPA";
-    public final static String WIFI_ENCRYPTION_WEP = "WEP";
+    public final static String WIFI_ENCRYPTION_WPA2_PSK ="WPA2-PSK";
+    //public final static String WIFI_ENCRYPTION_WPA = "WPA";
+    //public final static String WIFI_ENCRYPTION_WEP = "WEP";
     public final static String WIFI_ENCRYPTION_NONE = "nopass";
     public static final int WIFI_CONNECT_SUCCESS = 565112; // Success Code
     public static final int WIFI_FAIL_ADD_CONFIG = 456465; // Error code
@@ -109,10 +110,13 @@ public class WifiData {
         config.allowedKeyManagement.set(4);
         config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+        config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+        config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+
         return config;
     } // give WPA2-PSK configuration
 
-    public WifiConfiguration getWPAConfig(String NameSSID, String Password, boolean hiddenSSID){
+    /*public WifiConfiguration getWPAConfig(String NameSSID, String Password, boolean hiddenSSID){
         WifiConfiguration config = createConfig(NameSSID, hiddenSSID);
         //config.preSharedKey = "\""+ Password +"\"";
         config.preSharedKey = Password;
@@ -127,7 +131,7 @@ public class WifiData {
         config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
         config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
         return config;
-    }
+    }*/
 
     public WifiConfiguration getNoneConfig(String NameSSID, boolean hiddenSSID) {
         WifiConfiguration config = createConfig(NameSSID, hiddenSSID);
@@ -225,44 +229,27 @@ public class WifiData {
      * 0 = success to connect to selected network
      * */
 
-    public int connectToSelectedNetwork(String networkSSID, String networkPassword, String SecurityProtocol,boolean hiddenSSID) {
+    public int connectToSelectedNetwork(WifiConfiguration config, boolean NewConfig) {
         int networkId;
 
-        WifiConfiguration config = null;
+        if(NewConfig) {
+            // Add WiFi configuration to list of recognizable networks
+            if ((networkId = getWifiManager().addNetwork(config)) == -1) {
+                Log.d("TAG", "Failed to add network configuration!");
+                return WIFI_FAIL_ADD_CONFIG;
+            }
 
-        switch(SecurityProtocol) {
-            // WEP "security".
-            case WIFI_ENCRYPTION_WEP:
-                config = getWEPConfig(networkSSID,networkPassword,hiddenSSID);
-                break;
-
-            // WAP security. We have to set preSharedKey.
-            case WIFI_ENCRYPTION_WPA:
-                config = getWPAConfig(networkSSID,networkPassword,hiddenSSID);
-                break;
-
-            // Network without security.
-            case WIFI_ENCRYPTION_NONE:
-                config = getNoneConfig(networkSSID,hiddenSSID);
-                break;
-        }
-
-        // Add WiFi configuration to list of recognizable networks
-        if ((networkId = getWifiManager().addNetwork(config)) == -1) {
-            Log.d("TAG", "Failed to add network configuration!");
-            return WIFI_FAIL_ADD_CONFIG;
+            // Enable network to be connected
+            if (!getWifiManager().enableNetwork(networkId, true)) {
+                Log.d("TAG", "Failed to enable network!");
+                return WIFI_FAIL_ENABLE_NETWORK;
+            }
         }
 
         // Disconnect from current WiFi connection
         if (!disconnectFromWifi()) {
             Log.d("TAG", "Failed to disconnect from network!");
             return WIFI_FAIL_DISCONNECT_OLD_NETWORK;
-        }
-
-        // Enable network to be connected
-        if (!getWifiManager().enableNetwork(networkId, true)) {
-            Log.d("TAG", "Failed to enable network!");
-            return WIFI_FAIL_ENABLE_NETWORK;
         }
 
         // Connect to network
