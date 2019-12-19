@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/NoWifiNetwork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/network_Wifi_Not_found" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/WifiNetworkRecycleView"
         android:layout_width="match_parent"

@@ -72,6 +72,10 @@ public class WifiData {
         return wifiManager;
     } // return the WifiManager
 
+    public List<WifiConfiguration> getListWifiConfiguration(){
+        return getWifiManager().getConfiguredNetworks();
+    }
+
     /**
      * Function to disconnect from the currently connected WiFi AP.
      * @return true  if disconnection succeeded

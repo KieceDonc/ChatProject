@@ -8,6 +8,7 @@
     <string name="network_Wifi_connect_desc">Join a Wi-fi network</string>
     <string name="network_PlaneMode_title">Without network</string>
     <string name="network_PlaneMode_desc">Use the application without connecting to any network</string>
+    <string name="network_Wifi_Not_found">Unable to find any wifi network</string>
 
 
     <string name="Icon_router_desc">Icon who\'s describing Wifi access point</string>

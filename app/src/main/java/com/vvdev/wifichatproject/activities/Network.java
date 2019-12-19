@@ -36,7 +36,6 @@ public class Network extends AppCompatActivity {
         DataCall = new WifiData();
         DataCall.setWifiManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE));
 
-
         LinearLayout CreateAP = findViewById(R.id.LayoutWifiCreate);
         LinearLayout WifiJoin = findViewById(R.id.LayoutWifiJoin);
         LinearLayout OfflineAccess = findViewById(R.id.LayoutOfflineAccess);

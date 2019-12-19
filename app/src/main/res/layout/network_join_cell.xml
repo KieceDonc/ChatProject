@@ -14,11 +14,25 @@
         android:contentDescription="This description the wifi strength ( the signal power ) between the user device and the wifi network"
         app:srcCompat="@drawable/wifi_icon_weak" />
 
-    <TextView
-        android:id="@+id/SSIDName"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:text="Exemple of a very very long SSID name"
-        android:textSize="18sp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/SSIDName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exemple of a very very long SSID name"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/MacAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="TextView" />
+    </LinearLayout>
+
 </LinearLayout>
