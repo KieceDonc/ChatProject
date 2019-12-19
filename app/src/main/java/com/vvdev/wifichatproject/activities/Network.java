@@ -3,6 +3,7 @@ package com.vvdev.wifichatproject.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -43,12 +44,12 @@ public class Network extends AppCompatActivity {
         CreateAP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // Set LinearLayoutWifiCreate on click listener
-                /*if(!checkSystemWritePermission()){ // if we don't have write system perm
+                if(!checkSystemWritePermission()){ // if we don't have write system perm
                     PermSystemWrite.show(); // we show dialog
-                }else{*/
+                }else{
                     DialogAPWifiData Call = new DialogAPWifiData();
                     Call.ShowDialog(mContext,DataCall); // Show dialog to create AP
-                /*}*/
+                }
             }
         });
         WifiJoin.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +69,11 @@ public class Network extends AppCompatActivity {
     }
 
     private boolean checkSystemWritePermission() {
-        return Settings.System.canWrite(this);
+        if (Build.VERSION.SDK_INT >= 23) { // check comment under
+            return Settings.System.canWrite(this); // API lvl for this is 23
+        }else{
+            return true;
+        }
     }
 }
 
