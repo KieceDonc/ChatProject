@@ -115,9 +115,9 @@ public class WifiHandler {
      * information from the current connection
      * @return WifiConfiguration object created.
      */
-    public WifiConfiguration getWifiConf() {
+    /*public WifiConfiguration getWifiConf() {
         return CallData.createConfig();
-    }
+    }*/
 
     /**
      * Creates a new WifiConfiguration object for wifiConf.

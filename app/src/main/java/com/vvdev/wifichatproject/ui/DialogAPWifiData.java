@@ -54,7 +54,7 @@ public class DialogAPWifiData {
                 if(EverythingGood){
                     dialog.dismiss();
                     DataCall.setAPHidden(false);
-                    DataCall.setupAccessPoint(CurrentContext);
+                    DataCall.setupAccessPoint(CurrentContext,DataCall.getAPSSID(),DataCall.getAPEncryption(),DataCall.getAPHidden(),DataCall.getAPPassword());
                 }else{
                     /**TODO create small interaction that explain why user can't continue like too many caracters. Inval input, etc .... Also you need to handle illegal characters **/
                 }

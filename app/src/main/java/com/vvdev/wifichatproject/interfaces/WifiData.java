@@ -74,7 +74,7 @@ public class WifiData {
         return CallWifiHandler;
     } // Call this when you want to call method in WifiHandler
 
-    public WifiConfiguration createConfig() {
+    public WifiConfiguration createConfig(String NameSSID, boolean hiddenSSID) {
         WifiConfiguration config = new WifiConfiguration();
         config.allowedAuthAlgorithms.clear();
         config.allowedGroupCiphers.clear();
@@ -82,15 +82,15 @@ public class WifiData {
         config.allowedPairwiseCiphers.clear();
         config.allowedProtocols.clear();
         // Android API insists that an ascii SSID must be quoted to be correctly handled.
-        config.SSID = quoteNonHex(getAPSSID());
-        config.hiddenSSID = getAPHidden();
+        config.SSID = quoteNonHex(NameSSID);
+        config.hiddenSSID = hiddenSSID;
         return config;
     } // Create a wifi configuration
 
-    public WifiConfiguration getWPA2PSKConfig(){
-        WifiConfiguration config = createConfig();
-        config.SSID = getAPSSID();
-        config.preSharedKey = getAPPassword();
+    public WifiConfiguration getWPA2PSKConfig(String NameSSID, String Password, boolean hiddenSSID){
+        WifiConfiguration config = createConfig(NameSSID, hiddenSSID);
+        config.SSID = NameSSID;
+        config.preSharedKey = Password;
         config.hiddenSSID = false;
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
         config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
@@ -100,32 +100,41 @@ public class WifiData {
         return config;
     } // give WPA2-PSK configuration
 
-    public WifiConfiguration getNoneConfig() {
-        WifiConfiguration config = createConfig();
+    public WifiConfiguration getNoneConfig(String NameSSID, boolean hiddenSSID) {
+        WifiConfiguration config = createConfig(NameSSID, hiddenSSID);
         config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
         return config;
     } // give none configuration
 
-    public void setupAccessPoint(Context CurrentContext){
+    public void setupAccessPoint(Context CurrentContext,String NameSSID, String Encryption, boolean hiddenSSID,String Password){
 
         WifiApControl apControl = WifiApControl.getInstance(CurrentContext);
-        String Encryption = getAPEncryption();
         WifiManager wifiManager = getWifiManager();
 
 
-        wifiManager.setWifiEnabled(false);
+        disableWifi();
         if(Encryption.equals(ACCESS_POINT_WPA2_PSK)){
-            apControl.setEnabled(getWPA2PSKConfig(), true);
+            apControl.setEnabled(getWPA2PSKConfig(NameSSID,Password,hiddenSSID), true);
             apControl.enable();
-            wifiManager.setWifiEnabled(true);
+            enableWifi();
         }else if(Encryption.equals(ACCESS_POINT_NOENCRYPTION)){
-            apControl.setEnabled(getNoneConfig(), true);
+            apControl.setEnabled(getNoneConfig(NameSSID,hiddenSSID), true);
             apControl.enable();
-            wifiManager.setWifiEnabled(true);
+            enableWifi();
         }else{
             Log.e("WifiAP_Setup()","wrong encryption string receive :"+Encryption);
         }
-    } //setup the access point
+    } //setup the access point.
+
+    public boolean enableWifi() {
+        // enables WiFi connection
+        return getWifiManager().setWifiEnabled(true);
+    }
+
+    public boolean disableWifi() {
+        // disables WiFi connection
+        return getWifiManager().setWifiEnabled(false);
+    }
 
     public static String quoteNonHex(String value, int... allowedLengths) {
         return isHexOfLength(value, allowedLengths) ? value : convertToQuotedString(value);
