@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +16,7 @@ import android.widget.TextView;
 
 import com.vvdev.wifichatproject.R;
 import com.vvdev.wifichatproject.interfaces.WifiData;
-import com.vvdev.wifichatproject.interfaces.WifiHandler;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWifi.MyViewHolder> {
@@ -38,7 +35,7 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
             @Override
             public void onReceive(Context c, Intent intent)
             {
-                WifiList = CallData.getWifiManager().getScanResults();
+                WifiList = CallData.getWifiInRange();
                 notifyDataSetChanged();
             }
         }; // create broadcast receive
@@ -94,7 +91,7 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CallData.getCallWifiHandler().connectToSelectedNetwork();// need to handle password ( Does user have been connected to this network ? Yes -> Try to connect and if failure ask for password, No -> Ask for password
+                   // CallData.connectToSelectedNetwork();// need to handle password ( Does user have been connected to this network ? Yes -> Try to connect and if failure ask for password, No -> Ask for password
                 }
             });
         }

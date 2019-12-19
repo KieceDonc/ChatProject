@@ -1,10 +1,14 @@
 package com.vvdev.wifichatproject.interfaces;
 
 import android.content.Context;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import com.vvdev.wifichatproject.old.WifiHandler;
+
+import java.util.List;
 import java.util.regex.Pattern;
 
 import cc.mvdan.accesspoint.WifiApControl;
@@ -16,10 +20,12 @@ public class WifiData {
     private CharSequence AP_SSID; // SSID name for ap
     private boolean AP_Hidden; // If true, ap is hidden, else not
     private WifiManager wifiManager;
-    private WifiHandler CallWifiHandler;
 
     public final static String ACCESS_POINT_NOENCRYPTION = "nopass";
     public final static String ACCESS_POINT_WPA2_PSK = "WPA2-PSK";
+    public final static String WIFI_ENCRYPTION_WPA = "WPA";
+    public final static String WIFI_ENCRYPTION_WEP = "WEP";
+    public final static String WIFI_ENCRYPTION_NONE = "nopass";
     public static final int WIFI_CONNECT_SUCCESS = 565112; // Success Code
     public static final int WIFI_FAIL_ADD_CONFIG = 456465; // Error code
     public static final int WIFI_FAIL_DISCONNECT_OLD_NETWORK = 455685; // Error code
@@ -66,13 +72,15 @@ public class WifiData {
         return wifiManager;
     } // return the WifiManager
 
-    public void setCallWifiHandler(WifiHandler t){
-        CallWifiHandler =t;
-    }
+    /**
+     * Function to disconnect from the currently connected WiFi AP.
+     * @return true  if disconnection succeeded
+     *               false if disconnection failed
+     */
 
-    public WifiHandler getCallWifiHandler(){
-        return CallWifiHandler;
-    } // Call this when you want to call method in WifiHandler
+    public boolean disconnectFromWifi() {
+        return (getWifiManager().disconnect());
+    }
 
     public WifiConfiguration createConfig(String NameSSID, boolean hiddenSSID) {
         WifiConfiguration config = new WifiConfiguration();
@@ -90,8 +98,8 @@ public class WifiData {
     public WifiConfiguration getWPA2PSKConfig(String NameSSID, String Password, boolean hiddenSSID){
         WifiConfiguration config = createConfig(NameSSID, hiddenSSID);
         config.SSID = NameSSID;
-        config.preSharedKey = Password;
-        config.hiddenSSID = false;
+        config.preSharedKey =Password;
+        config.hiddenSSID = hiddenSSID;
         config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
         config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
         config.allowedKeyManagement.set(4);
@@ -99,6 +107,23 @@ public class WifiData {
         config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
         return config;
     } // give WPA2-PSK configuration
+
+    public WifiConfiguration getWPAConfig(String NameSSID, String Password, boolean hiddenSSID){
+        WifiConfiguration config = createConfig(NameSSID, hiddenSSID);
+        //config.preSharedKey = "\""+ Password +"\"";
+        config.preSharedKey = Password;
+        return config;
+    }
+
+    public WifiConfiguration getWEPConfig(String NameSSID, String Password, boolean hiddenSSID){
+        WifiConfiguration config = createConfig(NameSSID, hiddenSSID);
+        //config.wepKeys[0] = "\"" + Password + "\"";
+        config.wepKeys[0] = Password;
+        config.wepTxKeyIndex = 0;
+        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+        config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+        return config;
+    }
 
     public WifiConfiguration getNoneConfig(String NameSSID, boolean hiddenSSID) {
         WifiConfiguration config = createConfig(NameSSID, hiddenSSID);
@@ -109,8 +134,6 @@ public class WifiData {
     public void setupAccessPoint(Context CurrentContext,String NameSSID, String Encryption, boolean hiddenSSID,String Password){
 
         WifiApControl apControl = WifiApControl.getInstance(CurrentContext);
-        WifiManager wifiManager = getWifiManager();
-
 
         disableWifi();
         if(Encryption.equals(ACCESS_POINT_WPA2_PSK)){
@@ -126,6 +149,13 @@ public class WifiData {
         }
     } //setup the access point.
 
+    /**
+     * Function checkWifiEnabled checks if the WiFi connection
+     * is enabled on the device.
+     * @return true  if the WiFi connection is enabled,
+     *               false if the WiFi connection is disabled
+     */
+
     public boolean enableWifi() {
         // enables WiFi connection
         return getWifiManager().setWifiEnabled(true);
@@ -134,6 +164,110 @@ public class WifiData {
     public boolean disableWifi() {
         // disables WiFi connection
         return getWifiManager().setWifiEnabled(false);
+    }
+
+    /**
+     * Function checkWifiEnabled checks if the WiFi connection
+     * is enabled on the device.
+     * @return true  if the WiFi connection is enabled,
+     *               false if the WiFi connection is disabled
+     */
+    public boolean checkWifiEnabled() {
+        // checks if WiFi is enabled
+        return (getWifiManager() != null && getWifiManager().isWifiEnabled());
+    }
+
+    /**
+     * Function that scans for wifi networks available in the devices range.
+     * @return true  if scan started
+     *               false if scan could not be started
+     */
+    public boolean scanWifiInRange() {
+        if (!checkWifiEnabled()) {
+            enableWifi();
+        }
+
+        if (getWifiManager().startScan()) {
+            Log.d("TAG", "Failed to scan wifi's in range.");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Function getWifiInRange returns all the WiFi networks that are
+     * accessible through the access point (device AP) found during the
+     * last scan.
+     * @return List of ScanResult containing information on all WiFi networks
+     *               discovered in the range.
+     */
+    public List<ScanResult> getWifiInRange() {
+        // gets ~last~ list of WiFi networks accessible through the access point.
+        return getWifiManager().getScanResults();
+    }
+
+    /**
+     * Function to connect to a selected network
+     * @param networkSSID         network SSID name
+     * @param networkPassword     network password
+     * @param networkId           network ID from WifiManager
+     * @param SecurityProtocol    network security protocol
+     * @return true  if connection to selected network succeeded
+     *               false if connection to selected network failed
+     */
+
+    /**
+     * 0 = success to connect to selected network
+     * */
+
+    public int connectToSelectedNetwork(String networkSSID, String networkPassword, String SecurityProtocol,boolean hiddenSSID) {
+        int networkId;
+
+        WifiConfiguration config = null;
+
+        switch(SecurityProtocol) {
+            // WEP "security".
+            case WIFI_ENCRYPTION_WEP:
+                config = getWEPConfig(networkSSID,networkPassword,hiddenSSID);
+                break;
+
+            // WAP security. We have to set preSharedKey.
+            case WIFI_ENCRYPTION_WPA:
+                config = getWPAConfig(networkSSID,networkPassword,hiddenSSID);
+                break;
+
+            // Network without security.
+            case WIFI_ENCRYPTION_NONE:
+                config = getNoneConfig(networkSSID,hiddenSSID);
+                break;
+        }
+
+        // Add WiFi configuration to list of recognizable networks
+        if ((networkId = getWifiManager().addNetwork(config)) == -1) {
+            Log.d("TAG", "Failed to add network configuration!");
+            return WIFI_FAIL_ADD_CONFIG;
+        }
+
+        // Disconnect from current WiFi connection
+        if (!disconnectFromWifi()) {
+            Log.d("TAG", "Failed to disconnect from network!");
+            return WIFI_FAIL_DISCONNECT_OLD_NETWORK;
+        }
+
+        // Enable network to be connected
+        if (!getWifiManager().enableNetwork(networkId, true)) {
+            Log.d("TAG", "Failed to enable network!");
+            return WIFI_FAIL_ENABLE_NETWORK;
+        }
+
+        // Connect to network
+        if (!getWifiManager().reconnect()) {
+            Log.d("TAG", "Failed to connect!");
+            return WIFI_FAIL_TO_CONNECT;
+        }
+
+        return WIFI_CONNECT_SUCCESS;
     }
 
     public static String quoteNonHex(String value, int... allowedLengths) {

@@ -14,7 +14,7 @@
  * Copyright (C) 2012 LISA team
  */
 
-package com.vvdev.wifichatproject.interfaces;
+package com.vvdev.wifichatproject.old;
 
 import java.util.List;
 
@@ -24,6 +24,8 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+
+import com.vvdev.wifichatproject.interfaces.WifiData;
 
 import static com.vvdev.wifichatproject.interfaces.WifiData.WIFI_CONNECT_SUCCESS;
 import static com.vvdev.wifichatproject.interfaces.WifiData.WIFI_FAIL_ADD_CONFIG;
@@ -73,20 +75,20 @@ public class WifiHandler {
      * @return true  if the attempt to enable WiFi succeeded,
      *               false if the attempt to enable WiFi failed.
      */
-    public boolean enableWifi() {
+   /* public boolean enableWifi() {
         // enables WiFi connection
         return CallData.getWifiManager().setWifiEnabled(true);
-    }
+    }*/
 
     /**
      * Function disableWifi disables WiFi connection on the device.
      * @return true  if WiFi connection was disabled,
      *               false if attempt to disable WiFi failed.
      */
-    public boolean disableWifi() {
+    /*public boolean disableWifi() {
         // disables WiFi connection
         return CallData.getWifiManager().setWifiEnabled(false);
-    }
+    }*/
 
     /**
      * Function getWifiInfo gets the current WiFi connection information in a

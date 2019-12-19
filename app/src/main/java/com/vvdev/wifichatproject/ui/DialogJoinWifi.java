@@ -27,11 +27,11 @@ public class DialogJoinWifi extends AlertDialog.Builder {
     }
 
     public void Show(){
-        DataCall.getCallWifiHandler().scanWifiInRange(); // start scanning all wifi network
+        DataCall.scanWifiInRange(); // start scanning all wifi network
         Activity CurrentActivity = (Activity) CurrentContext;
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(CurrentContext);
-        View CustomLayout = CurrentActivity.getLayoutInflater().inflate(R.layout.network_ap_parameters,null);
+        View CustomLayout = CurrentActivity.getLayoutInflater().inflate(R.layout.network_join,null);
         builder.setView(CustomLayout);        // add a button
 
         android.support.v7.app.AlertDialog dialog = builder.create(); //create dialog

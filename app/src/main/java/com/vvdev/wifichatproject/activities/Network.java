@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.vvdev.wifichatproject.R;
 import com.vvdev.wifichatproject.interfaces.WifiData;
-import com.vvdev.wifichatproject.interfaces.WifiHandler;
+import com.vvdev.wifichatproject.old.WifiHandler;
 import com.vvdev.wifichatproject.ui.DialogAPWifiData;
 import com.vvdev.wifichatproject.ui.DialogJoinWifi;
 import com.vvdev.wifichatproject.ui.DialogSystemWritePerm;
@@ -34,7 +34,6 @@ public class Network extends AppCompatActivity {
 
         DataCall = new WifiData();
         DataCall.setWifiManager((WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE));
-        DataCall.setCallWifiHandler(new WifiHandler(mContext,DataCall));
 
 
         LinearLayout CreateAP = findViewById(R.id.LayoutWifiCreate);
@@ -44,12 +43,12 @@ public class Network extends AppCompatActivity {
         CreateAP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // Set LinearLayoutWifiCreate on click listener
-                if(!checkSystemWritePermission()){ // if we don't have write system perm
+                /*if(!checkSystemWritePermission()){ // if we don't have write system perm
                     PermSystemWrite.show(); // we show dialog
-                }else{
+                }else{*/
                     DialogAPWifiData Call = new DialogAPWifiData();
                     Call.ShowDialog(mContext,DataCall); // Show dialog to create AP
-                }
+                /*}*/
             }
         });
         WifiJoin.setOnClickListener(new View.OnClickListener() {
