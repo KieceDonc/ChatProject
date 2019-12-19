@@ -92,7 +92,8 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   // CallData.connectToSelectedNetwork();// need to handle password ( Does user have been connected to this network ? Yes -> Try to connect and if failure ask for password, No -> Ask for password
+
+                   // CallData.connectToSelectedNetwork();// TODO need to handle password ( Does user have been connected to this network ? Yes -> Try to connect and if failure ask for password, No -> Ask for password
                 }
             });
         }
