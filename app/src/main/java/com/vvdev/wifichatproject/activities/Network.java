@@ -55,6 +55,7 @@ public class Network extends AppCompatActivity {
         WifiJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DataCall.scanWifiInRange(); // start scanning all wifi network
                 DialogJoinWifi Call = new DialogJoinWifi(mContext, DataCall);
                 Call.Show();
                 /**TODO need to create interface to join a wifi */

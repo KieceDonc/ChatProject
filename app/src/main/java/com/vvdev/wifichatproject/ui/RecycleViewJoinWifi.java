@@ -29,6 +29,7 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
     public RecycleViewJoinWifi(Context receive1, WifiData receive2){
         CurrentContext = receive1;
         CallData = receive2;
+        WifiList = CallData.getWifiInRange();
 
         ScanWifiNetwork = new BroadcastReceiver()
         {

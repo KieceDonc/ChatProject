@@ -1,10 +1,11 @@
 package com.vvdev.wifichatproject.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Point;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.view.WindowManager;
 
 import com.vvdev.wifichatproject.R;
 import com.vvdev.wifichatproject.interfaces.WifiData;
-
 import java.util.Objects;
 
 public class DialogJoinWifi extends AlertDialog.Builder {
@@ -27,24 +27,29 @@ public class DialogJoinWifi extends AlertDialog.Builder {
     }
 
     public void Show(){
-        DataCall.scanWifiInRange(); // start scanning all wifi network
         Activity CurrentActivity = (Activity) CurrentContext;
 
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(CurrentContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(CurrentContext);
         View CustomLayout = CurrentActivity.getLayoutInflater().inflate(R.layout.network_join,null);
-        builder.setView(CustomLayout);        // add a button
+        builder.setView(CustomLayout);
 
-        android.support.v7.app.AlertDialog dialog = builder.create(); //create dialog
+        AlertDialog dialog = builder.create(); //create dialog
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.show();
 
         int[] DimensionScreen = GetSizeOfScreen(CurrentActivity);// get dimension of the screen
-
+        /**
+         * TODO review how to manage the ui interface with an reycleview
+         **/
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
         lp.width = DimensionScreen[0]/100*75; // set width of dialog to 75 % of width of the screen
         lp.height = DimensionScreen[1]/100*75; // set height of dialog to 75 % of height of the screen
 //lp.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 330/*height value*/, getResources().getDisplayMetrics()); for custom height value
         dialog.getWindow().setAttributes(lp);
-        dialog.show();
+
+        setupRecycleView(dialog);
     }
 
 
@@ -57,6 +62,13 @@ public class DialogJoinWifi extends AlertDialog.Builder {
         Log.e("Width", "" + width);
         Log.e("height", "" + height);
         return new int[]{width, height};
+    }
+
+    private void setupRecycleView(AlertDialog dialog){
+        final RecyclerView rv = dialog.findViewById(R.id.WifiNetworkRecycleView);
+        rv.setLayoutManager(new LinearLayoutManager(CurrentContext));
+        RecycleViewJoinWifi adapter = new RecycleViewJoinWifi(CurrentContext,DataCall);
+        rv.setAdapter(adapter);
     }
 
 
