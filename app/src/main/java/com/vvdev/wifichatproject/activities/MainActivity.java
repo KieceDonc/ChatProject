@@ -11,15 +11,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.network);
+        setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, Network.class);
+        Intent intent = new Intent(this, DialogsActivity.class);
         startActivity(intent);
 
-        /**
-         * https://stackoverflow.com/questions/44175056/how-to-create-custom-wpa-hotspot-with-ssid-and-password-in-android
-         * https://stackoverflow.com/questions/27653084/creating-wpa2-psk-access-point-in-android-programmatically
-         * https://github.com/zxing/zxing/blob/master/android/src/com/google/zxing/client/android/wifi/WifiConfigManager.java*/
+        /*Intent intent = new Intent(this, Network.class);
+        startActivity(intent);*/
+
 
     }
 
