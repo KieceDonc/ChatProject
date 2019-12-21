@@ -54,7 +54,8 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
         WifiChangeFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         WifiChangeFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
         WifiChangeFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        CurrentContext.registerReceiver(ScanWifiNetwork, WifiChangeFilter);
+        WifiChangeFilter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+        CurrentContext.registerReceiver(ScanWifiNetwork, WifiChangeFilter);// TODO broadcast receive not working
     }
     @Override
     public int getItemCount() {
