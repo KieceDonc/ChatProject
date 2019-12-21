@@ -9,6 +9,7 @@
     <string name="network_PlaneMode_title">Without network</string>
     <string name="network_PlaneMode_desc">Use the application without connecting to any network</string>
     <string name="network_Wifi_Not_found">Unable to find any wifi network</string>
+    <string name="network_Wifi_out_of_range">Out of range</string>
 
 
     <string name="Icon_router_desc">Icon who\'s describing Wifi access point</string>
@@ -47,7 +48,7 @@
     <string name="Activate">Activate</string>
 
     <string name="PermWriteSystemTitle">You need to activate write settings system !</string>
-    <string name="PermWriteSystemDesc">By clicking on "Activate" this will redirect you on the permission menu of the app. You will have a button and you will have to turn on this one to use this app. By clicking on "Cancel" on will not be able to use this functionality</string>
+    <string name="PermWriteSystemDesc">By clicking on "Activate" this will redirect you on the permission menu of the app. You will have a button and you will have to turn on this one to use this app.</string>
     <!--
         TODO need to translate in french -->
 </resources>

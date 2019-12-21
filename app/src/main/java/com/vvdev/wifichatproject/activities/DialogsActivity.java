@@ -50,15 +50,6 @@ public class DialogsActivity extends AppCompatActivity {
         IMessage MessageTest = new DefaultMessage("0","ceci est un test",UserTest,new Date());
         TestListUser.add(UserTest);
         IDialog Test = new DefaultDialog("0",String.valueOf(R.drawable.wifi_icon_good),"tst",TestListUser,MessageTest,1);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream("/some/file/path/filename.ser", true);
-
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(MessageTest);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         dialogsListAdapter.addItem(Test);
     }
 }

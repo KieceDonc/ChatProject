@@ -8,6 +8,10 @@ import android.util.Log;
 
 import com.vvdev.wifichatproject.old.WifiHandler;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -212,7 +216,14 @@ public class WifiData {
      */
     public List<ScanResult> getWifiInRange() {
         // gets ~last~ list of WiFi networks accessible through the access point.
-        return getWifiManager().getScanResults();
+        List<ScanResult> WifiInRange = getWifiManager().getScanResults();
+        Collections.sort(WifiInRange, new Comparator<ScanResult>() {
+            @Override
+            public int compare(ScanResult o1, ScanResult o2) {
+                return Integer.compare(o2.level, o1.level);
+            }
+        });
+        return WifiInRange;
     }
 
     /**

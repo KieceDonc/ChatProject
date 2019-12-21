@@ -1,6 +1,5 @@
 package com.vvdev.wifichatproject.ui;
 
-import android.app.Activity;
 import android.net.wifi.WifiConfiguration;
 import android.support.v7.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -11,7 +10,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,8 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
     private List<ScanResult> WifiList;
     private WifiData CallData;
     private AlertDialog mDialog;
+    private int mPosition = 0; // serve in my
+
 
     public RecycleViewJoinWifi(Context receive1, WifiData receive2, AlertDialog receive3){
         CurrentContext = receive1;
@@ -46,10 +47,14 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
                 WifiList = CallData.getWifiInRange();
                 TextViewNoNetwork();
                 notifyDataSetChanged();
+                Log.e("test", String.valueOf(WifiList));
             }
         }; // create broadcast receive
-        CurrentContext.registerReceiver(ScanWifiNetwork, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)); // BroadcastReceiver when wifi is detected
-
+        IntentFilter WifiChangeFilter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        WifiChangeFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        WifiChangeFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
+        WifiChangeFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        CurrentContext.registerReceiver(ScanWifiNetwork, WifiChangeFilter);
     }
     @Override
     public int getItemCount() {
@@ -79,24 +84,24 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView SSIDName;
-        private int SignalPower;
         private ScanResult CurrentPair;
-        private TextView MacAdress;
+        private TextView mMacAddress;
 
         MyViewHolder(final View itemView) {
             super(itemView);
 
             SSIDName = itemView.findViewById(R.id.SSIDName);
-            MacAdress = itemView.findViewById(R.id.MacAddress);
+            mMacAddress = itemView.findViewById(R.id.MacAddress);
 
-            SignalPower = CurrentPair.level;
-            //encryption = pair.capabilities;
+            CurrentPair=WifiList.get(mPosition);
+            mPosition++;
+            int signalPower = CurrentPair.level;
             ImageView imgSignalPower = itemView.findViewById(R.id.SignalPower);
-            if (SignalPower > -50) {
+            if (signalPower > -50) {
                 imgSignalPower.setImageResource(R.drawable.wifi_icon_excellent);
-            }else if(SignalPower>-60){
+            }else if(signalPower >-60){
                 imgSignalPower.setImageResource(R.drawable.wifi_icon_good);
-            }else if(SignalPower>-70){
+            }else if(signalPower >-70){
                 imgSignalPower.setImageResource(R.drawable.wifi_icon_fair);
             }else{
                 imgSignalPower.setImageResource(R.drawable.wifi_icon_weak);
@@ -131,12 +136,13 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
                     }
                 }
             });
+
+
         }
 
         public void display(ScanResult pair) {
-            CurrentPair = pair;
             SSIDName.setText(pair.SSID);
-            MacAdress.setText(pair.BSSID);
+            mMacAddress.setText(pair.BSSID);
         }
     }
 
@@ -148,7 +154,7 @@ public class RecycleViewJoinWifi extends RecyclerView.Adapter<RecycleViewJoinWif
         if(WifiList.size()==0){
             NoWifiNetwork.setVisibility(View.VISIBLE);
         }else{
-            NoWifiNetwork.setVisibility(View.INVISIBLE);
+            NoWifiNetwork.setVisibility(View.GONE);
         }
     }
 

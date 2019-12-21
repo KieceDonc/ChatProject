@@ -21,7 +21,7 @@
 
     <LinearLayout
         android:id="@+id/LayoutWifiCreate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
@@ -30,8 +30,8 @@
         android:layout_marginRight="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:orientation="horizontal"
-        android:focusable="true">
+        android:focusable="true"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/WifiCreateImg"
@@ -68,7 +68,7 @@
 
     <LinearLayout
         android:id="@+id/LayoutWifiJoin"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
@@ -77,8 +77,8 @@
         android:layout_marginRight="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:orientation="horizontal"
-        android:focusable="true">
+        android:focusable="true"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/WifiConnectImg"
@@ -114,7 +114,7 @@
 
     <LinearLayout
         android:id="@+id/LayoutBluetoothMode"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
@@ -123,9 +123,9 @@
         android:layout_marginRight="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:focusable="true">
+        android:visibility="gone">
         <!-- TODO create bluetooth network-->
 
         <ImageView
@@ -161,7 +161,7 @@
 
     <LinearLayout
         android:id="@+id/LayoutOfflineAccess"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_marginStart="8dp"
@@ -170,8 +170,8 @@
         android:layout_marginRight="8dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:orientation="horizontal"
-        android:focusable="true">
+        android:focusable="true"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/PlaneMode"

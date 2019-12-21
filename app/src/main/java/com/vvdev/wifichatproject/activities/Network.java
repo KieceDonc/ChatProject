@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 
 import com.vvdev.wifichatproject.R;
 import com.vvdev.wifichatproject.interfaces.WifiData;
-import com.vvdev.wifichatproject.old.WifiHandler;
 import com.vvdev.wifichatproject.ui.DialogAPWifiData;
 import com.vvdev.wifichatproject.ui.DialogJoinWifi;
 import com.vvdev.wifichatproject.ui.DialogSystemWritePerm;
