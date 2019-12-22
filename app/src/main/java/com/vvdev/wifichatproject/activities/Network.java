@@ -56,6 +56,7 @@ public class Network extends AppCompatActivity {
                 DataCall.scanWifiInRange(); // start scanning all wifi network
                 DialogJoinWifi Call = new DialogJoinWifi(mContext, DataCall);
                 Call.Show();
+                /*TODO Need to handle location permission*/
                 /**TODO need to create interface to join a wifi */
             }
         });
